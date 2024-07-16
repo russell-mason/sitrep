@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "3f8d5865-ed50-4850-a173-24b6fe6df9ba",
+		"name": "SitRep-Examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8975"
+	},
+	"item": [
+		{
+			"name": "Sanity Checks",
+			"item": []
+		},
+		{
+			"name": "Ok",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/sanity-checks/ok",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"sanity-checks",
+						"ok"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Not Found",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/sanity-checks/not-found",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"sanity-checks",
+						"not-found"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

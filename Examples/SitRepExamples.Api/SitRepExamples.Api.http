@@ -1,0 +1,11 @@
+@HostAddress = http://localhost:5118
+
+GET {{HostAddress}}/sanity-checks/ok
+Accept: application/json
+
+###
+
+GET {{HostAddress}}/sanity-checks/not-found
+Accept: application/json
+
+###
