@@ -3,16 +3,22 @@
 [TestFixture]
 public class TicketStatusTests
 {
+    private Faker _faker;
+
+    [SetUp]
+    public void SetUp()
+    {
+        _faker = new Faker();
+    }
+
     [Test]
     public void Constructor_SetsDefaultProperties()
     {
-        var faker = new Faker();
-        
         // Arrange
         var trackingNumber = CombGuid.NewGuid();
-        var issuedTo = faker.Random.AlphaNumeric(10);
-        var issuedOnBehalfOf = faker.Random.AlphaNumeric(20);
-        var reasonForIssuing = faker.Random.AlphaNumeric(30);
+        var issuedTo = _faker.Random.AlphaNumeric(10);
+        var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
+        var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
         // Act
         var result = new TicketStatus(trackingNumber, issuedTo, issuedOnBehalfOf, reasonForIssuing);
@@ -38,13 +44,11 @@ public class TicketStatusTests
     [TestCase(ProcessingStage.Failed, true)]
     public void Constructor_WhenProcessingStageChanges_ThenIsClosedIsReflected(ProcessingStage stage, bool expectedIsClosed)
     {
-        var faker = new Faker();
-
         // Arrange
         var trackingNumber = CombGuid.NewGuid();
-        var issuedTo = faker.Random.AlphaNumeric(10);
-        var issuedOnBehalfOf = faker.Random.AlphaNumeric(20);
-        var reasonForIssuing = faker.Random.AlphaNumeric(30);
+        var issuedTo = _faker.Random.AlphaNumeric(10);
+        var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
+        var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
         var status = new TicketStatus(trackingNumber, issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
