@@ -1,0 +1,1 @@
+nuget.exe add .\..\src\SitRep\bin\Release\SitRep.0.1.4.nupkg -Source .\

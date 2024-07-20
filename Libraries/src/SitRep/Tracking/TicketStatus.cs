@@ -33,6 +33,12 @@ public record TicketStatus(Guid TrackingNumber, string IssuedTo, string IssuedOn
     public string? ProcessingMessage { get; init; }
 
     /// <summary>
+    /// Gets the date and time the ticket was last progresses; null if the ticket has only been opened, but never
+    /// progressed. This is not updated when the ticket is closed.
+    /// </summary>
+    public DateTime? DateLastProgressed { get; init; }
+
+    /// <summary>
     /// Gets the date and time the ticket was closed; null if the ticket is still open.
     /// </summary>
     public DateTime? DateClosed { get; init; }
@@ -47,7 +53,7 @@ public record TicketStatus(Guid TrackingNumber, string IssuedTo, string IssuedOn
     /// Gets a list of validation errors if the process failed due to invalid data.
     /// The key should be a property name, and the values should be the validation errors associated with that property.
     /// </summary>
-    public Dictionary<string, string[]>? ValidationErrors { get; init; }
+    public ValidationErrorDictionary? ValidationErrors { get; init; }
 
     /// <summary>
     /// Gets a code that can be used to identify the type of error. Can be used by clients as a key to implement

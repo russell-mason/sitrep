@@ -23,10 +23,10 @@ public class TicketTrackerTests
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var startingState = new StartingState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var openState = new OpenState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
         // Act
-        var ticketStatus = await _ticketTracker.OpenTicketAsync(startingState);
+        var ticketStatus = await _ticketTracker.OpenTicketAsync(openState);
 
         // Assert
         ticketStatus.ProcessingStage.Should().Be(ProcessingStage.Pending);
@@ -34,6 +34,7 @@ public class TicketTrackerTests
         ticketStatus.IssuedOnBehalfOf.Should().Be(issuedOnBehalfOf);
         ticketStatus.ReasonForIssuing.Should().Be(reasonForIssuing);
         ticketStatus.ProcessingMessage.Should().BeNull();
+        ticketStatus.DateLastProgressed.Should().BeNull();
         ticketStatus.DateClosed.Should().BeNull();
         ticketStatus.ResourceIdentifier.Should().BeNull();
         ticketStatus.ValidationErrors.Should().BeNull();
@@ -48,10 +49,10 @@ public class TicketTrackerTests
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var startingState = new StartingState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var state = new OpenState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
         // Act
-        var ticketStatus = await _ticketTracker.OpenTicketAsync(startingState);
+        var ticketStatus = await _ticketTracker.OpenTicketAsync(state);
 
         // Assert
         _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(ticketStatus), Times.Once);
@@ -94,6 +95,7 @@ public class TicketTrackerTests
         // Assert
         ticketStatus.ProcessingStage.Should().Be(ProcessingStage.InProgress);
         ticketStatus.ProcessingMessage.Should().Be(progressMessage);
+        ticketStatus.DateLastProgressed.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
         ticketStatus.DateClosed.Should().BeNull();
         ticketStatus.ResourceIdentifier.Should().BeNull();
         ticketStatus.ValidationErrors.Should().BeNull();
@@ -113,10 +115,10 @@ public class TicketTrackerTests
                             .ReturnsAsync(startingTicketStatus);
 
         // Act
-        await _ticketTracker.ProgressTicketAsync(startingTicketStatus.TrackingNumber, state);
+        var ticketStatus = await _ticketTracker.ProgressTicketAsync(startingTicketStatus.TrackingNumber, state);
 
         // Assert
-        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(startingTicketStatus), Times.Once);
+        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(ticketStatus), Times.Once);
     }
 
     [Test]
@@ -124,10 +126,10 @@ public class TicketTrackerTests
     {
         // Arrange
         var trackingNumber = CombGuid.NewGuid();
-        var resourceIdentifier = _faker.Internet.Url();
         var successMessage = _faker.Random.AlphaNumeric(40);
-
-        var state = new SuccessState(resourceIdentifier, successMessage);
+        var resourceIdentifier = _faker.Internet.Url();
+        
+        var state = new SuccessState(successMessage, resourceIdentifier);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(trackingNumber))
                             .ReturnsAsync((TicketStatus) null!);
@@ -144,10 +146,10 @@ public class TicketTrackerTests
     {
         // Arrange
         var startingTicketStatus = CreateTicketStatus();
-        var resourceIdentifier = _faker.Internet.Url();
         var successMessage = _faker.Random.AlphaNumeric(40);
-
-        var state = new SuccessState(resourceIdentifier, successMessage);
+        var resourceIdentifier = _faker.Internet.Url();
+        
+        var state = new SuccessState(successMessage, resourceIdentifier);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(startingTicketStatus.TrackingNumber))
                             .ReturnsAsync(startingTicketStatus);
@@ -159,6 +161,7 @@ public class TicketTrackerTests
         ticketStatus.DateClosed.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
         ticketStatus.ProcessingStage.Should().Be(ProcessingStage.Succeeded);
         ticketStatus.ProcessingMessage.Should().Be(successMessage);
+        ticketStatus.DateLastProgressed.Should().BeNull();
         ticketStatus.ResourceIdentifier.Should().Be(resourceIdentifier);
         ticketStatus.ValidationErrors.Should().BeNull();
         ticketStatus.ErrorCode.Should().BeNull();
@@ -169,19 +172,19 @@ public class TicketTrackerTests
     {
         // Arrange
         var startingTicketStatus = CreateTicketStatus();
-        var resourceIdentifier = _faker.Internet.Url();
         var successMessage = _faker.Random.AlphaNumeric(40);
-
-        var state = new SuccessState(resourceIdentifier, successMessage);
+        var resourceIdentifier = _faker.Internet.Url();
+        
+        var state = new SuccessState(successMessage, resourceIdentifier);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(startingTicketStatus.TrackingNumber))
                             .ReturnsAsync(startingTicketStatus);
 
         // Act
-        await _ticketTracker.CloseTicketAsync(startingTicketStatus.TrackingNumber, state);
+        var ticketStatus = await _ticketTracker.CloseTicketAsync(startingTicketStatus.TrackingNumber, state);
 
         // Assert
-        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(startingTicketStatus), Times.Once);
+        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(ticketStatus), Times.Once);
     }
 
     [Test]
@@ -189,10 +192,10 @@ public class TicketTrackerTests
     {
         // Arrange
         var trackingNumber = CombGuid.NewGuid();
-        var validationErrors = CreateValidationErrors();
         var validationMessage = _faker.Random.AlphaNumeric(40);
-
-        var state = new ValidationState(validationErrors, validationMessage);
+        var validationErrors = CreateValidationErrors();
+        
+        var state = new ValidationState(validationMessage, validationErrors);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(trackingNumber))
                             .ReturnsAsync((TicketStatus) null!);
@@ -209,10 +212,10 @@ public class TicketTrackerTests
     {
         // Arrange
         var startingTicketStatus = CreateTicketStatus();
-        var validationErrors = CreateValidationErrors();
         var validationMessage = _faker.Random.AlphaNumeric(40);
+        var validationErrors = CreateValidationErrors();
 
-        var state = new ValidationState(validationErrors, validationMessage);
+        var state = new ValidationState(validationMessage, validationErrors);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(startingTicketStatus.TrackingNumber))
                             .ReturnsAsync(startingTicketStatus);
@@ -224,6 +227,7 @@ public class TicketTrackerTests
         ticketStatus.DateClosed.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
         ticketStatus.ProcessingStage.Should().Be(ProcessingStage.Failed);
         ticketStatus.ProcessingMessage.Should().Be(validationMessage);
+        ticketStatus.DateLastProgressed.Should().BeNull();
         ticketStatus.ValidationErrors.Should().BeEquivalentTo(validationErrors);
         ticketStatus.ResourceIdentifier.Should().BeNull();
         ticketStatus.ErrorCode.Should().BeNull();
@@ -234,19 +238,19 @@ public class TicketTrackerTests
     {
         // Arrange
         var startingTicketStatus = CreateTicketStatus();
-        var validationErrors = CreateValidationErrors();
         var validationMessage = _faker.Random.AlphaNumeric(40);
+        var validationErrors = CreateValidationErrors();
 
-        var state = new ValidationState(validationErrors, validationMessage);
+        var state = new ValidationState(validationMessage, validationErrors);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(startingTicketStatus.TrackingNumber))
                             .ReturnsAsync(startingTicketStatus);
 
         // Act
-        await _ticketTracker.CloseTicketAsync(startingTicketStatus.TrackingNumber, state);
+        var ticketStatus = await _ticketTracker.CloseTicketAsync(startingTicketStatus.TrackingNumber, state);
 
         // Assert
-        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(startingTicketStatus), Times.Once);
+        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(ticketStatus), Times.Once);
     }
 
     [Test]
@@ -254,10 +258,10 @@ public class TicketTrackerTests
     {
         // Arrange
         var trackingNumber = CombGuid.NewGuid();
-        var errorCode = _faker.Random.AlphaNumeric(5);
         var errorMessage = _faker.Random.AlphaNumeric(40);
-
-        var state = new FailureState(errorCode, errorMessage);
+        var errorCode = _faker.Random.AlphaNumeric(5);
+        
+        var state = new ErrorState(errorMessage, errorCode);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(trackingNumber))
                             .ReturnsAsync((TicketStatus) null!);
@@ -274,10 +278,10 @@ public class TicketTrackerTests
     {
         // Arrange
         var startingTicketStatus = CreateTicketStatus();
-        var errorCode = _faker.Random.AlphaNumeric(5);
         var errorMessage = _faker.Random.AlphaNumeric(40);
+        var errorCode = _faker.Random.AlphaNumeric(5);
 
-        var state = new FailureState(errorCode, errorMessage);
+        var state = new ErrorState(errorMessage, errorCode);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(startingTicketStatus.TrackingNumber))
                             .ReturnsAsync(startingTicketStatus);
@@ -289,6 +293,7 @@ public class TicketTrackerTests
         ticketStatus.DateClosed.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
         ticketStatus.ProcessingStage.Should().Be(ProcessingStage.Failed);
         ticketStatus.ProcessingMessage.Should().Be(errorMessage);
+        ticketStatus.DateLastProgressed.Should().BeNull();
         ticketStatus.ErrorCode.Should().Be(errorCode);
         ticketStatus.ResourceIdentifier.Should().BeNull();
         ticketStatus.ValidationErrors.Should().BeNull();
@@ -299,19 +304,19 @@ public class TicketTrackerTests
     {
         // Arrange
         var startingTicketStatus = CreateTicketStatus();
-        var errorCode = _faker.Random.AlphaNumeric(5);
         var errorMessage = _faker.Random.AlphaNumeric(40);
+        var errorCode = _faker.Random.AlphaNumeric(5);
 
-        var state = new FailureState(errorCode, errorMessage);
+        var state = new ErrorState(errorMessage, errorCode);
 
         _ticketTrackingStore.Setup(tts => tts.GetTicketStatusAsync(startingTicketStatus.TrackingNumber))
                             .ReturnsAsync(startingTicketStatus);
 
         // Act
-        await _ticketTracker.CloseTicketAsync(startingTicketStatus.TrackingNumber, state);
+        var ticketStatus = await _ticketTracker.CloseTicketAsync(startingTicketStatus.TrackingNumber, state);
 
         // Assert
-        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(startingTicketStatus), Times.Once);
+        _ticketTrackingStore.Verify(tts => tts.SetTicketStatusAsync(ticketStatus), Times.Once);
     }
 
     private TicketStatus CreateTicketStatus()
@@ -326,9 +331,9 @@ public class TicketTrackerTests
         return result;
     }
 
-    private Dictionary<string, string[]> CreateValidationErrors()
+    private ValidationErrorDictionary CreateValidationErrors()
     {
-        var errors = new Dictionary<string, string[]>
+        var errors = new ValidationErrorDictionary
         {
             { _faker.Random.AlphaNumeric(10), [_faker.Random.AlphaNumeric(20)] },
             { _faker.Random.AlphaNumeric(10), [_faker.Random.AlphaNumeric(20), _faker.Random.AlphaNumeric(20)] }

@@ -19,6 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unit", "unit", "{704DCE4A-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitRep.Tests", "test\unit\SitRep.Tests\SitRep.Tests.csproj", "{896BE65F-CF1D-4C07-845C-DBE5C050C5B8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{14DC6299-999D-49D8-A303-4DEB8AB00ABB}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\add-local-nuget-feed.cmd = nuget\add-local-nuget-feed.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

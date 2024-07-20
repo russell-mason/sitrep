@@ -1,11 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services
        .AddEndpointsApiExplorer()
        .AddSwaggerGen();
 
-builder.UseSitRep();
+builder.Services.AddSitRep();
 
 var app = builder.Build();
 
@@ -18,6 +19,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseEndpointRegistration();
+app.UseSitRep();
+
+app.UseExampleEndpointRegistration();
 
 app.Run();

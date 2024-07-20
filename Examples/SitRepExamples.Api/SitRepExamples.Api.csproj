@@ -8,17 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="SitRep" Version="0.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Postman\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="SitRep">
-      <HintPath>..\..\Libraries\src\SitRep\bin\Release\net8.0\SitRep.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

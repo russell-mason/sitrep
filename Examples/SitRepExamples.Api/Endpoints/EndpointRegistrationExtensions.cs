@@ -2,11 +2,11 @@
 
 public static class EndpointRegistrationExtensions
 {
-    public static WebApplication UseEndpointRegistration(this WebApplication app)
+    public static IEndpointRouteBuilder UseExampleEndpointRegistration(this IEndpointRouteBuilder builder)
     {
-        app.RegisterOkSanityCheck();
-        app.RegisterNotFoundSanityCheck();
+        builder.RegisterOkSanityCheck();
+        builder.RegisterNotFoundSanityCheck();
 
-        return app;
+        return builder;
     }
 }

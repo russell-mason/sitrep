@@ -10,7 +10,7 @@ public interface ITicketTracker
     /// </summary>
     /// <param name="state">The state to transition to.</param>
     /// <returns>The updated status of the ticket.</returns>
-    Task<TicketStatus> OpenTicketAsync(StartingState state);
+    Task<TicketStatus> OpenTicketAsync(OpenState state);
 
     /// <summary>
     /// Updates an existing ticket to be In Progress. This can be called multiple times with different messages
@@ -43,5 +43,5 @@ public interface ITicketTracker
     /// <param name="trackingNumber">A tracking number that can be used to identify the ticket.</param>
     /// <param name="state">The state to transition to.</param>
     /// <returns>The updated status of the ticket.</returns>
-    Task<TicketStatus> CloseTicketAsync(Guid trackingNumber, FailureState state);
+    Task<TicketStatus> CloseTicketAsync(Guid trackingNumber, ErrorState state);
 }

@@ -6,7 +6,7 @@
 /// <param name="ticketTrackingStore">The store that provides persistence for the status of tickets.</param>
 public class TicketTracker(ITicketTrackingStore ticketTrackingStore) : ITicketTracker
 {
-    public async Task<TicketStatus> OpenTicketAsync(StartingState state)
+    public async Task<TicketStatus> OpenTicketAsync(OpenState state)
     {
         var ticketStatus = new TicketStatus(state.TrackingNumber,
                                             state.IssuedTo,
@@ -27,13 +27,14 @@ public class TicketTracker(ITicketTrackingStore ticketTrackingStore) : ITicketTr
         {
             ProcessingStage = ProcessingStage.InProgress,
             ProcessingMessage = state.ProgressMessage,
+            DateLastProgressed = DateTime.UtcNow,
             DateClosed = null,
             ResourceIdentifier = null,
             ValidationErrors = null,
             ErrorCode = null
         };
 
-        await Save(ticketStatus);
+        await Save(updatedTicketStatus);
 
         return updatedTicketStatus;
     }
@@ -53,7 +54,7 @@ public class TicketTracker(ITicketTrackingStore ticketTrackingStore) : ITicketTr
             ErrorCode = null
         };
 
-        await Save(ticketStatus);
+        await Save(updatedTicketStatus);
 
         return updatedTicketStatus;
     }
@@ -68,17 +69,19 @@ public class TicketTracker(ITicketTrackingStore ticketTrackingStore) : ITicketTr
             DateClosed = DateTime.UtcNow,
             ProcessingStage = ProcessingStage.Failed,
             ProcessingMessage = state.ValidationMessage,
-            ValidationErrors = Copy(state.ValidationErrors),  // Copy to prevent reference issues
+            // Because the dictionary is mutable, we need to copy it to prevent reference issues.
+            // However, because it only contains strings, we can use a shallow copy.
+            ValidationErrors = new ValidationErrorDictionary(state.ValidationErrors),
             ResourceIdentifier = null,
             ErrorCode = null
         };
 
-        await Save(ticketStatus);
+        await Save(updatedTicketStatus);
 
         return updatedTicketStatus;
     }
 
-    public async Task<TicketStatus> CloseTicketAsync(Guid trackingNumber, FailureState state)
+    public async Task<TicketStatus> CloseTicketAsync(Guid trackingNumber, ErrorState state)
     {
         var ticketStatus = await ticketTrackingStore.GetTicketStatusAsync(trackingNumber)
                            ?? throw new TrackingNumberNotFoundException(trackingNumber, state.ErrorMessage);
@@ -93,7 +96,7 @@ public class TicketTracker(ITicketTrackingStore ticketTrackingStore) : ITicketTr
             ValidationErrors = null
         };
 
-        await Save(ticketStatus);
+        await Save(updatedTicketStatus);
 
         return updatedTicketStatus;
     }
@@ -102,9 +105,5 @@ public class TicketTracker(ITicketTrackingStore ticketTrackingStore) : ITicketTr
     {
         await ticketTrackingStore.SetTicketStatusAsync(ticketStatus);
     }
-
-    // Because the dictionary is mutable, we need to copy it to prevent reference issues. However, because
-    // it only contains strings, we can use a shallow copy.
-    private static Dictionary<string, string[]> Copy(Dictionary<string, string[]> values) => new(values);
 }
 

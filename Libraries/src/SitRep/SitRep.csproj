@@ -1,13 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="RT.Comb" Version="4.0.1" />
-  </ItemGroup>
+    <PropertyGroup>
+        <PackageId>SitRep</PackageId>
+        <Version>0.1.4</Version>
+        <Authors>Russell Mason</Authors>
+        <Company>Russell Mason</Company>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="RT.Comb" Version="4.0.1" />
+    </ItemGroup>
 
 </Project>
