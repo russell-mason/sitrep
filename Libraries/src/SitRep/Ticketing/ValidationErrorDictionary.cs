@@ -1,4 +1,4 @@
-﻿namespace SitRep.Tracking;
+﻿namespace SitRep.Ticketing;
 
 /// <summary>
 /// Represent a list of validation errors where the key is a property name, and the values are the

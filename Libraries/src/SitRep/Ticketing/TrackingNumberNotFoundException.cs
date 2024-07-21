@@ -1,4 +1,4 @@
-﻿namespace SitRep.Tracking;
+﻿namespace SitRep.Ticketing;
 
 /// <summary>
 /// Represents an exception that's thrown when a tracking number cannot be found, either because its invalid
@@ -7,6 +7,10 @@
 [Serializable]
 public class TrackingNumberNotFoundException : Exception
 {
+    public TrackingNumberNotFoundException(Guid trackingNumber) : this(trackingNumber, $"Ticket '{trackingNumber}' not found")
+    {
+    }
+
     public TrackingNumberNotFoundException(Guid trackingNumber, string message) : base(message)
     {
         TrackingNumber = trackingNumber;
@@ -17,5 +21,8 @@ public class TrackingNumberNotFoundException : Exception
         TrackingNumber = trackingNumber;
     }
 
+    /// <summary>
+    /// Gets the tracking number of the ticket that couldn't be found.
+    /// </summary>
     public Guid TrackingNumber { get; }
 }

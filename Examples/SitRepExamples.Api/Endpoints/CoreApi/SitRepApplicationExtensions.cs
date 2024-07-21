@@ -22,8 +22,8 @@ public static class SitRepApplicationExtensions
     private static void RegisterEndpoints(IEndpointRouteBuilder builder)
     {
         builder.RegisterPing();
-        builder.RegisterGetTicketStatus();
-        builder.RegisterGetTicketStatuses();
+        builder.RegisterGetTicket();
+        builder.RegisterGetTickets();
         builder.RegisterOpenTicket();
         builder.RegisterProgressTicket();
         builder.RegisterCloseTicketWithSuccess();

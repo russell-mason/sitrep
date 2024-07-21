@@ -11,10 +11,10 @@ public static class PutProgressTicketEndpoint
     }
 
     private static async Task<IResult> ExecuteAsync([AsParameters] ProgressTicketRequest request, 
-                                                    ITicketTracker ticketTracker)
+                                                    ITicketProcessor ticketProcessor)
     {
-        var result = await ticketTracker.ProgressTicketAsync(request.TrackingNumber, request.ToProgressState());
-        var response = new TicketStatusResponse(result);
+        var ticket = await ticketProcessor.TransitionTicketAsync(request.TrackingNumber, request.ToTransitionState());
+        var response = new TicketResponse(ticket);
 
         return Results.Ok(response);
     }

@@ -44,9 +44,9 @@ public class ValidationErrorDictionaryTests
     public void Add_PerformsBaseFunctionAsNormal()
     {
         const string key = "key";
-        
+
         string[] values = ["value1", "value2"];
-        
+
         // Arrange
         var validationErrorDictionary = new ValidationErrorDictionary();
 

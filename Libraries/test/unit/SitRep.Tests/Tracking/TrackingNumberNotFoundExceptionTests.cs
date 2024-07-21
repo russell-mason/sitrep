@@ -12,6 +12,21 @@ public class TrackingNumberNotFoundExceptionTests
     }
 
     [Test]
+    public void Constructor_WhenNoMessageIsProvided_ThenDefaultMessageIsUsed()
+    {
+        // Arrange
+        var trackingNumber = CombGuid.NewGuid();
+
+        // Act
+        var exception = new TrackingNumberNotFoundException(trackingNumber);
+
+        // Assert
+        exception.TrackingNumber.Should().Be(trackingNumber);
+        exception.Message.Should().StartWith("Ticket '");
+        exception.Message.Should().EndWith("' not found");
+    }
+
+    [Test]
     public void Constructor_WhenTrackingNumberIsProvided_ThenTrackingNumberIsSet()
     {
         // Arrange

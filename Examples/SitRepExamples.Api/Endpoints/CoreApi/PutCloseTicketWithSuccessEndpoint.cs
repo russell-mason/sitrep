@@ -11,10 +11,10 @@ public static class PutCloseTicketWithSuccessEndpoint
     }
 
     private static async Task<IResult> ExecuteAsync([AsParameters] CloseTicketWithSuccessRequest request, 
-                                                    ITicketTracker ticketTracker)
+                                                    ITicketProcessor ticketProcessor)
     {
-        var result = await ticketTracker.CloseTicketAsync(request.TrackingNumber, request.ToSuccessState());
-        var response = new TicketStatusResponse(result);
+        var ticket = await ticketProcessor.TransitionTicketAsync(request.TrackingNumber, request.ToTransitionState());
+        var response = new TicketResponse(ticket);
 
         return Results.Ok(response);
     }

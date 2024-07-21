@@ -3,7 +3,7 @@
 public record ProgressTicketRequest([FromRoute] Guid TrackingNumber, 
                                     [FromBody] ProgressTicketRequestBody Body)
 {
-    public ProgressState ToProgressState() => new(Body.Message);
+    public ProgressTransition ToTransitionState() => new(Body.Message);
 }
 
 public record ProgressTicketRequestBody(string Message);

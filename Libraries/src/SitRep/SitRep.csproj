@@ -8,10 +8,13 @@
 
     <PropertyGroup>
         <PackageId>SitRep</PackageId>
-        <Version>0.1.4</Version>
+        <Version>0.2.1</Version>
         <Authors>Russell Mason</Authors>
         <Company>Russell Mason</Company>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>SITREP</Title>
+        <Copyright>Russell Mason 2024</Copyright>
+        <Description>A library for tracking the progress of asynchronous processes.</Description>
     </PropertyGroup>
 
     <ItemGroup>

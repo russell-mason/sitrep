@@ -24,11 +24,11 @@ public static class Routes
         public const string PingName = "Ping";
         public const string Ping = $"{Base}/ping";
 
-        public const string GetTicketStatusName = "GetTicketStatus";
-        public const string GetTicketStatus = $"{Base}/tickets/{{trackingNumber:guid}}";
+        public const string GetTicketName = "GetTicketStatus";
+        public const string GetTicket = $"{Base}/tickets/{{trackingNumber:guid}}";
 
-        public const string GetTicketStatusesName = "GetTicketStatuses";
-        public const string GetTicketStatuses = $"{Base}/tickets";
+        public const string GetTicketsName = "GetTicketStatuses";
+        public const string GetTickets = $"{Base}/tickets";
 
         public const string OpenTicketName = "PostOpenTicket";
         public const string OpenTicket = $"{Base}/tickets";

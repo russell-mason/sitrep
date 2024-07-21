@@ -1,31 +1,42 @@
-﻿namespace SitRep.Tracking;
+﻿namespace SitRep.Ticketing;
 
 /// <summary>
-/// Represents the current status of a ticket allowing the progress of an asynchronous process to be tracked.
+/// Represents a ticket allowing the progress of an asynchronous process to be tracked.
 /// </summary>
-/// <param name="TrackingNumber">A tracking number that correlates the ticket to the current status of that ticket.</param>
-/// <param name="IssuedTo">A unique identifier that can indicate who the ticket was issued to.</param>
+/// <param name="TrackingNumber">A tracking number that can be used to track the current status of a ticket.</param>
+/// <param name="IssuedTo">A unique identifier that indicates who the ticket was issued to.</param>
 /// <param name="IssuedOnBehalfOf">
-/// A unique identifier that can indicate who started the process. This may be the same as IssuedTo, or may be a
+/// A unique identifier that indicates who started the process. This may be the same as IssuedTo, or may be a
 /// system account when one process spawns another.
 /// </param>
 /// <param name="ReasonForIssuing">A description that explains what the purpose of the process is.</param>
-public record TicketStatus(Guid TrackingNumber, string IssuedTo, string IssuedOnBehalfOf, string ReasonForIssuing)
+public record Ticket(Guid TrackingNumber, string IssuedTo, string IssuedOnBehalfOf, string ReasonForIssuing)
 {
+    /// <summary>
+    /// Gets or sets the default expiration time for a ticket in minutes. Defaults to 7 days.
+    /// </summary>
+    public static int DefaultExpirationInMinutes { get; set; } = 60 * 24 * 7;  // 7 days = 10080 minutes
+
     /// <summary>
     /// Gets the date and time the ticket was issued.
     /// </summary>
     public DateTime DateIssued { get; } = DateTime.UtcNow;
 
     /// <summary>
-    /// Gets the ticket's current processing stage.
+    /// Gets the date and time the ticket expires.
+    /// Defaults to the number of minutes specified by DefaultExpirationInMinutes from the date issued.
     /// </summary>
-    public ProcessingStage ProcessingStage { get; init; } = ProcessingStage.Pending;
+    public DateTime ExpirationDate { get; } = DateTime.UtcNow.AddMinutes(DefaultExpirationInMinutes);
+
+    /// <summary>
+    /// Gets the current processing state the ticket is in.
+    /// </summary>
+    public ProcessingState ProcessingState { get; init; } = ProcessingState.Pending;
 
     /// <summary>
     /// Gets whether the ticket is currently open, or has been closed.
     /// </summary>
-    public bool IsClosed => ProcessingStage is ProcessingStage.Succeeded or ProcessingStage.Failed;
+    public bool IsClosed => ProcessingState is ProcessingState.Succeeded or ProcessingState.Failed;
 
     /// <summary>
     /// Gets a message that describes the current state of processing.

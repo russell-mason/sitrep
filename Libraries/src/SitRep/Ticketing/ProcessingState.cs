@@ -1,9 +1,9 @@
-﻿namespace SitRep.Tracking;
+﻿namespace SitRep.Ticketing;
 
 /// <summary>
-/// Describes each stage of an asynchronous process.
+/// Describes the current state of an asynchronous process.
 /// </summary>
-public enum ProcessingStage
+public enum ProcessingState
 {
     /// <summary>
     /// The process has not started yet.

@@ -3,7 +3,7 @@
 public record CloseTicketWithSuccessRequest([FromRoute] Guid TrackingNumber, 
                                             [FromBody] CloseTicketWithSuccessRequestBody Body)
 {
-    public SuccessState ToSuccessState() => new(Body.Message, Body.ResourceIdentifier);
+    public SuccessTransition ToTransitionState() => new(Body.Message, Body.ResourceIdentifier);
 }
 
 public record CloseTicketWithSuccessRequestBody(string Message, string? ResourceIdentifier = null);

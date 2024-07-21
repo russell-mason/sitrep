@@ -11,13 +11,13 @@ public static class PostOpenTicketEndpoint
     }
 
     private static async Task<IResult> ExecuteAsync([AsParameters] OpenTicketRequest request,
-                                                    ITicketTracker ticketTracker,
+                                                    ITicketProcessor ticketProcessor,
                                                     LinkGenerator linkGenerator)
     {
-        var result = await ticketTracker.OpenTicketAsync(request.ToOpenState());
-        var response = new TicketStatusResponse(result);
+        var ticket = await ticketProcessor.CreateTicketAsync(request.ToCreateTicketState());
+        var response = new TicketResponse(ticket);
 
-        var url = linkGenerator.GetPathByName(Routes.CoreApi.GetTicketStatusName, new { trackingNumber = response.TrackingNumber });
+        var url = linkGenerator.GetPathByName(Routes.CoreApi.GetTicketName, new { trackingNumber = response.TrackingNumber });
 
         return Results.Created(url, response);
     }

@@ -1,7 +1,7 @@
 ﻿namespace SitRep.Tests.Tracking;
 
 [TestFixture]
-public class TicketStatusTests
+public class TicketTests
 {
     private Faker _faker;
 
@@ -21,7 +21,7 @@ public class TicketStatusTests
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
         // Act
-        var result = new TicketStatus(trackingNumber, issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var result = new Ticket(trackingNumber, issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
         // Assert
         result.TrackingNumber.Should().Be(trackingNumber);
@@ -29,7 +29,7 @@ public class TicketStatusTests
         result.IssuedOnBehalfOf.Should().Be(issuedOnBehalfOf);
         result.ReasonForIssuing.Should().Be(reasonForIssuing);
         result.DateIssued.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
-        result.ProcessingStage.Should().Be(ProcessingStage.Pending);
+        result.ProcessingState.Should().Be(ProcessingState.Pending);
         result.IsClosed.Should().BeFalse();
         result.ProcessingMessage.Should().BeNull();
         result.DateClosed.Should().BeNull();
@@ -38,11 +38,11 @@ public class TicketStatusTests
         result.ErrorCode.Should().BeNull();
     }
 
-    [TestCase(ProcessingStage.Pending, false)]
-    [TestCase(ProcessingStage.InProgress, false)]
-    [TestCase(ProcessingStage.Succeeded, true)]
-    [TestCase(ProcessingStage.Failed, true)]
-    public void Constructor_WhenProcessingStageChanges_ThenIsClosedIsReflected(ProcessingStage stage, bool expectedIsClosed)
+    [TestCase(ProcessingState.Pending, false)]
+    [TestCase(ProcessingState.InProgress, false)]
+    [TestCase(ProcessingState.Succeeded, true)]
+    [TestCase(ProcessingState.Failed, true)]
+    public void Constructor_WhenProcessingStageChanges_ThenIsClosedIsReflected(ProcessingState stage, bool expectedIsClosed)
     {
         // Arrange
         var trackingNumber = CombGuid.NewGuid();
@@ -50,10 +50,10 @@ public class TicketStatusTests
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var status = new TicketStatus(trackingNumber, issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var ticket = new Ticket(trackingNumber, issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
         // Act
-        var result = status with { ProcessingStage = stage };
+        var result = ticket with { ProcessingState = stage };
 
         // Assert
         result.IsClosed.Should().Be(expectedIsClosed);

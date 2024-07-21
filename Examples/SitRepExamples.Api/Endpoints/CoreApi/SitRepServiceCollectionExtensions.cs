@@ -21,7 +21,7 @@ public static class SitRepServiceCollectionExtensions
 
     private static void RegisterServices(IServiceCollection services)
     {
-        services.AddSingleton<ITicketTrackingStore, InMemoryTicketTrackingStore>();
-        services.AddSingleton<ITicketTracker, TicketTracker>();
+        services.AddSingleton<ITicketStore, InMemoryTicketStore>();
+        services.AddSingleton<ITicketProcessor, TicketProcessor>();
     }
 }

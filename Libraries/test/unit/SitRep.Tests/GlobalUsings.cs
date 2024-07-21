@@ -4,5 +4,5 @@ global using FluentAssertions.Extensions;
 global using Moq;
 global using NUnit.Framework;
 global using SitRep.Abstractions;
-global using SitRep.Tracking;
-global using SitRep.Tracking.States;
+global using SitRep.Ticketing;
+global using SitRep.Ticketing.Transitions;
