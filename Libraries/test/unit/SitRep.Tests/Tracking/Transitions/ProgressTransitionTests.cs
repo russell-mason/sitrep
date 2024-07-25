@@ -36,7 +36,7 @@ public class ProgressTransitionTests
         ticket.ReasonForIssuing.Should().Be(reasonForIssuing);
         ticket.ProcessingState.Should().Be(ProcessingState.InProgress);
         ticket.DateIssued.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
-        ticket.ExpirationDate.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(Ticket.DefaultExpirationInMinutes), 500.Milliseconds());
+        ticket.ExpirationDate.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(Ticket.ExpirationPeriodInMinutes), 500.Milliseconds());
         ticket.ProcessingMessage.Should().Be(progressMessage);
         ticket.DateLastProgressed.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
         ticket.DateClosed.Should().BeNull();

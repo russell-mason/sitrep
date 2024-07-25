@@ -15,7 +15,7 @@ public record Ticket(Guid TrackingNumber, string IssuedTo, string IssuedOnBehalf
     /// <summary>
     /// Gets or sets the default expiration time for a ticket in minutes. Defaults to 7 days.
     /// </summary>
-    public static int DefaultExpirationInMinutes { get; set; } = 60 * 24 * 7;  // 7 days = 10080 minutes
+    public static int ExpirationPeriodInMinutes { get; set; } = 60 * 24 * 7;  // 7 days = 10080 minutes;
 
     /// <summary>
     /// Gets the date and time the ticket was issued.
@@ -26,7 +26,7 @@ public record Ticket(Guid TrackingNumber, string IssuedTo, string IssuedOnBehalf
     /// Gets the date and time the ticket expires.
     /// Defaults to the number of minutes specified by DefaultExpirationInMinutes from the date issued.
     /// </summary>
-    public DateTime ExpirationDate { get; } = DateTime.UtcNow.AddMinutes(DefaultExpirationInMinutes);
+    public DateTime ExpirationDate { get; init; } = DateTime.UtcNow.AddMinutes(ExpirationPeriodInMinutes);
 
     /// <summary>
     /// Gets the current processing state the ticket is in.

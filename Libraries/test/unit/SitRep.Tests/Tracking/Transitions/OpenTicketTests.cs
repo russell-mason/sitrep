@@ -31,7 +31,7 @@ public class OpenTicketTests
         ticket.ReasonForIssuing.Should().Be(reasonForIssuing);
         ticket.ProcessingState.Should().Be(ProcessingState.Pending);
         ticket.DateIssued.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
-        ticket.ExpirationDate.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(Ticket.DefaultExpirationInMinutes), 500.Milliseconds());
+        ticket.ExpirationDate.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(Ticket.ExpirationPeriodInMinutes), 500.Milliseconds());
         ticket.ProcessingMessage.Should().BeNull();
         ticket.DateLastProgressed.Should().BeNull();
         ticket.DateClosed.Should().BeNull();

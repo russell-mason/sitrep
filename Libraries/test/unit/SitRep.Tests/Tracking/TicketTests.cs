@@ -29,6 +29,7 @@ public class TicketTests
         result.IssuedOnBehalfOf.Should().Be(issuedOnBehalfOf);
         result.ReasonForIssuing.Should().Be(reasonForIssuing);
         result.DateIssued.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
+        result.ExpirationDate.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(Ticket.ExpirationPeriodInMinutes), 500.Milliseconds());
         result.ProcessingState.Should().Be(ProcessingState.Pending);
         result.IsClosed.Should().BeFalse();
         result.ProcessingMessage.Should().BeNull();

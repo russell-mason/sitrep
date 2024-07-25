@@ -10,7 +10,11 @@ public class InMemoryTicketStoreTests
     public void SetUp()
     {
         _faker = new Faker();
-        _store = new InMemoryTicketStore();
+
+        var options = new InMemoryTicketStoreOptions();
+        var optionsWrapper = new OptionsWrapper<InMemoryTicketStoreOptions>(options);
+
+        _store = new InMemoryTicketStore(optionsWrapper);
     }
 
     [Test]
@@ -67,36 +71,32 @@ public class InMemoryTicketStoreTests
     [Test] public async Task GetTicketAsync_WhenInStore_ThenIsReturned()
     {
         // Arrange
-        var ticketStatus = CreateTicket();
+        var ticket = CreateTicket();
 
-        await _store.StoreTicketAsync(ticketStatus);
+        await _store.StoreTicketAsync(ticket);
 
         // Act
-        var result = await _store.GetTicketAsync(ticketStatus.TrackingNumber);
+        var result = await _store.GetTicketAsync(ticket.TrackingNumber);
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().Be(ticketStatus);
+        result.Should().Be(ticket);
     }
 
     [Test]
     public async Task GetTicketAsync_WhenMultipleEntriesInStore_ThenReturnsTheCorrectEntry()
     {
         // Arrange
-        var ticketStatus1 = CreateTicket();
-        var ticketStatus2 = CreateTicket();
-        var ticketStatus3 = CreateTicket();
+        var tickets = CreateTickets(3);
 
-        await _store.StoreTicketAsync(ticketStatus1);
-        await _store.StoreTicketAsync(ticketStatus2);
-        await _store.StoreTicketAsync(ticketStatus3);
+        await StoreTicketAsync(tickets);
 
         // Act
-        var result = await _store.GetTicketAsync(ticketStatus2.TrackingNumber);
+        var result = await _store.GetTicketAsync(tickets[1].TrackingNumber);
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().Be(ticketStatus2);
+        result.Should().Be(tickets[1]);
     }
 
     [Test]
@@ -117,24 +117,72 @@ public class InMemoryTicketStoreTests
     public async Task GetTicketsAsync_FiltersByIssuedTo()
     {
         // Arrange
-        var ticketStatuses1 = CreateTicketsWithSameIssuedTo(2);
-        var ticketStatuses2 = CreateTicketsWithSameIssuedTo(3);
-        var ticketStatuses3 = CreateTicketsWithSameIssuedTo(4);
+        var tickets1 = CreateTicketsWithSameIssuedTo(2);
+        var tickets2 = CreateTicketsWithSameIssuedTo(3);
+        var tickets3 = CreateTicketsWithSameIssuedTo(4);
 
-        var all = ticketStatuses1.Concat(ticketStatuses2).Concat(ticketStatuses3);
+        var all = tickets1.Concat(tickets2).Concat(tickets3);
 
-        foreach (var ticketStatus in all)
-        {
-            await _store.StoreTicketAsync(ticketStatus);
-        }
+        await StoreTicketAsync(all);
 
-        var filterBy = ticketStatuses2.First().IssuedTo;
+        var filterBy = tickets2.First().IssuedTo;
 
         // Act
         var result = await _store.GetTicketsAsync(filterBy);
 
         // Assert
         result.Count().Should().Be(3);
+    }
+
+    [TestCase(true, int.MaxValue, 0, 11, 10, 1, 1)] // Removes all expired tickets even when threshold not hit
+    [TestCase(false, 10, 6, 10, 0, 10, 10)] // Hits threshold so nothing removed
+    [TestCase(false, 10, 6, 1, 0, 11, 4)] // Last entry exceeds threshold removes 6 + 1 (exceeds threshold by 1)
+    [TestCase(false, 10, 6, 5, 0, 11, 11)] // Check on 5*2 so 11th entry misses check
+    [TestCase(false, 10, 6, 5, 0, 12, 12)] // Check on 5*2 so 11th entry misses check
+    [TestCase(false, 10, 6, 5, 0, 13, 13)] // Check on 5*2 so 11th entry misses check
+    [TestCase(false, 10, 6, 5, 0, 14, 14)] // Check on 5*2 so 11th entry misses check
+    [TestCase(false, 10, 6, 5, 0, 15, 4)] // Check on 5*3 so hit removes so that result is 10 - 6 (15 to 6 = 9 removed
+    [TestCase(true, 10, 6, 12, 7, 5, 5)] // 5 + 7 total - removes 7 expired, so under threshold, no others removed
+    [TestCase(true, 10, 6, 12, 5, 7, 7)] // 5 + 7 total - removes 7 expired, so under threshold, no others removed
+    [TestCase(true, 10, 6, 20, 8, 12, 4)] // 8 + 12 total - removes 8 expired, so 12 above threshold, removes to be 6 under
+    public async Task StoreTicketAsync_WhenIntervalTriggered_ThenTicketsAreRemoved(
+        bool discardExpired,
+        int discardThreshold,
+        int discardCount,
+        int discardInternal,
+        int expiredCount,
+        int currentCount,
+        int expectedCount)
+    {
+        // Arrange
+        var options = new InMemoryTicketStoreOptions
+                      {
+                          DiscardExpired = discardExpired,
+                          DiscardThreshold = discardThreshold,
+                          DiscardCount = discardCount,
+                          DiscardInterval = discardInternal
+                      };
+
+        var optionsWrapper = new OptionsWrapper<InMemoryTicketStoreOptions>(options);
+
+        _store = new InMemoryTicketStore(optionsWrapper);
+
+        var issuedTo = _faker.Random.AlphaNumeric(10);
+
+        Ticket.ExpirationPeriodInMinutes = -10;
+        var expiredTickets = CreateTicketsWithSameIssuedTo(expiredCount, issuedTo, true);
+
+        Ticket.ExpirationPeriodInMinutes = 10;
+        var currentTickets = CreateTicketsWithSameIssuedTo(currentCount, issuedTo, true);
+
+        // Act
+        await StoreTicketAsync(expiredTickets);
+        await StoreTicketAsync(currentTickets);
+
+        // Assert
+        var all = await _store.GetTicketsAsync(issuedTo);
+
+        all.Count().Should().Be(expectedCount);
     }
 
     private Ticket CreateTicket()
@@ -149,14 +197,29 @@ public class InMemoryTicketStoreTests
         return ticket;
     }
 
-    private List<Ticket> CreateTicketsWithSameIssuedTo(int quantity)
+    private List<Ticket> CreateTickets(int quantity) =>
+        Enumerable.Range(0, quantity).Select(_ => CreateTicket()).ToList();
+
+    private List<Ticket> CreateTicketsWithSameIssuedTo(int quantity, string? issuedTo = null, bool closed = false)
     {
-        var issuedTo = _faker.Random.AlphaNumeric(10);
+        var selectedIssuedTo = issuedTo ?? _faker.Random.AlphaNumeric(10);
 
         var result = Enumerable.Range(0, quantity)
-                               .Select(_ => CreateTicket() with { IssuedTo = issuedTo })
+                               .Select(_ => CreateTicket() with
+                                            {
+                                                IssuedTo = selectedIssuedTo,
+                                                ProcessingState = closed ? ProcessingState.Succeeded : ProcessingState.Pending
+                                            })
                                .ToList();
 
         return result;
+    }
+
+    private async Task StoreTicketAsync(IEnumerable<Ticket> tickets)
+    {
+        foreach (var ticket in tickets)
+        {
+            await _store.StoreTicketAsync(ticket);
+        }
     }
 }

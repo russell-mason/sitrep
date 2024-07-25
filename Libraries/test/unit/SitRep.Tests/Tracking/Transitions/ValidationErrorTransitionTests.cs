@@ -37,7 +37,7 @@ public class ValidationErrorTransitionTests
         ticket.ReasonForIssuing.Should().Be(reasonForIssuing);
         ticket.ProcessingState.Should().Be(ProcessingState.Failed);
         ticket.DateIssued.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());
-        ticket.ExpirationDate.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(Ticket.DefaultExpirationInMinutes), 500.Milliseconds());
+        ticket.ExpirationDate.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(Ticket.ExpirationPeriodInMinutes), 500.Milliseconds());
         ticket.ProcessingMessage.Should().Be(validationMessage);
         ticket.DateLastProgressed.Should().BeNull();
         ticket.DateClosed.Should().BeCloseTo(DateTime.UtcNow, 500.Milliseconds());

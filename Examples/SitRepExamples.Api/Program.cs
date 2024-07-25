@@ -1,12 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
 builder.Services
        .AddEndpointsApiExplorer()
        .AddSwaggerGen();
 
-builder.Services.AddSitRep();
+builder.Services.AddExamples();
+
+//builder.Services.AddSitRep(configureOptions => configureOptions.UseAspNetCore().UseInMemoryTicketStore());
+builder.Services.AddSitRep(configureOptions => configureOptions.UseAspNetCore().UseRedisStackTicketStore());
 
 var app = builder.Build();
 
@@ -19,8 +21,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseSitRep();
+app.UseExamples();
 
-app.UseExampleEndpointRegistration();
+app.UseSitRep();
 
 app.Run();

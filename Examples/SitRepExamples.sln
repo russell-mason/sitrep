@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitRepExamples.Api", "SitRepExamples.Api\SitRepExamples.Api.csproj", "{E5DFE1B1-7EA6-4B3E-B5A5-B58D7A571AF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitRepExamples.Api", "SitRepExamples.Api\SitRepExamples.Api.csproj", "{E5DFE1B1-7EA6-4B3E-B5A5-B58D7A571AF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitRep", "src\SitRep\SitRep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitRep.AspNetCore", "src\SitRep.AspNetCore\SitRep.AspNetCore.csproj", "{45E0E3A2-4773-4634-BB8C-086C856DAFC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitRep.Redis", "src\SitRep.Redis\SitRep.Redis.csproj", "{7EF5ADF5-1BC6-4D5E-8432-373BB170A4DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitRep.RedisStack", "src\SitRep.RedisStack\SitRep.RedisStack.csproj", "{7EF5ADF5-1BC6-4D5E-8432-373BB170A4DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitRep.SqlServer", "src\SitRep.SqlServer\SitRep.SqlServer.csproj", "{F0D371BD-C6DE-49B1-B984-E26ED2AFB5D4}"
 EndProject
@@ -22,6 +22,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{14DC6299-999D-49D8-A303-4DEB8AB00ABB}"
 	ProjectSection(SolutionItems) = preProject
 		nuget\add-local-nuget-feed.cmd = nuget\add-local-nuget-feed.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{C50E29C8-24B1-4BBE-87B9-218DC4F4DFED}"
+	ProjectSection(SolutionItems) = preProject
+		docker\docker-compose.yml = docker\docker-compose.yml
+		docker\docket-up.cmd = docker\docket-up.cmd
 	EndProjectSection
 EndProject
 Global

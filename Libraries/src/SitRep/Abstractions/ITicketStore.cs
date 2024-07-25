@@ -6,6 +6,13 @@
 public interface ITicketStore
 {
     /// <summary>
+    /// Allows the ticket store to perform any necessary initialization, such as creating indexes.
+    /// This is done automatically when registered using AspNetCore extensions; otherwise must be called
+    /// manually after the store is created.
+    /// </summary>
+    public void Initialize();
+
+    /// <summary>
     /// Gets the ticket with the specified tracking number.
     /// </summary>
     /// <param name="trackingNumber">A tacking number that identifies the ticket.</param>
