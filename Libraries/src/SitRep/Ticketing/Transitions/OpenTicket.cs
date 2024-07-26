@@ -1,7 +1,7 @@
 ﻿namespace SitRep.Ticketing.Transitions;
 
 /// <summary>
-/// Creates a ticket int the initial pending state.
+/// Provides state that can be used to create a ticket in an initial pending state.
 /// </summary>
 public class OpenTicket : ICreateTicketState
 {
@@ -10,6 +10,16 @@ public class OpenTicket : ICreateTicketState
     private readonly string _issuedOnBehalfOf;
     private readonly string _reasonForIssuing;
 
+    /// <summary>
+    /// Creates new state with basic ticket details.
+    /// </summary>
+    /// <param name="trackingNumber">A unique tracking number that can identify the ticket.</param>
+    /// <param name="issuedTo">A unique identifier that can indicate who the ticket was issued to.</param>
+    /// <param name="issuedOnBehalfOf">
+    /// A unique identifier that can indicate who started the process. This may be the same as IssuedTo, or may be a
+    /// system account when one process spawns another.
+    /// </param>
+    /// <param name="reasonForIssuing">A description that explains what the purpose of the process is.</param>
     private OpenTicket(Guid trackingNumber, string issuedTo, string issuedOnBehalfOf, string reasonForIssuing)
     {
         _trackingNumber = trackingNumber;
@@ -19,7 +29,7 @@ public class OpenTicket : ICreateTicketState
     }
 
     /// <summary>
-    /// Create a new ticket in the pending state.
+    /// Creates new state with basic ticket details.
     /// </summary>
     /// <param name="issuedTo">A unique identifier that can indicate who the ticket was issued to.</param>
     /// <param name="issuedOnBehalfOf">
@@ -33,7 +43,7 @@ public class OpenTicket : ICreateTicketState
     }
 
     /// <summary>
-    /// Specifies details when a ticket is opened in the pending state.
+    /// Creates new state with basic ticket details.
     /// </summary>
     /// <param name="issuedTo">
     /// A unique identifier that can indicate who the ticket was issued to.
@@ -44,5 +54,9 @@ public class OpenTicket : ICreateTicketState
     {
     }
 
+    /// <summary>
+    /// Allows a processor to create a new ticket in the desired state.
+    /// </summary>
+    /// <returns>The newly created ticket.</returns>
     public Ticket CreateState() => new(_trackingNumber, _issuedTo, _issuedOnBehalfOf, _reasonForIssuing);
 }

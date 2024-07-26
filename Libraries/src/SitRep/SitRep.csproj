@@ -4,18 +4,24 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup>
         <PackageId>SitRep</PackageId>
-        <Version>0.3.1</Version>
+        <Version>0.3.4</Version>
         <Authors>Russell Mason</Authors>
         <Company>Russell Mason</Company>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>SITREP</Title>
         <Copyright>Russell Mason 2024</Copyright>
         <Description>A library for tracking the progress of asynchronous processes.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="docs\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />

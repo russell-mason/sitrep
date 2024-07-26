@@ -1,7 +1,8 @@
 ﻿namespace SitRep.Ticketing.Transitions;
 
 /// <summary>
-/// Transitions a ticket to a completed and failed state, as the result of validation errors.
+/// Provides state that can be used to transition a ticket to a completed and failed state, as the result of
+/// validation errors.
 /// </summary>
 /// <param name="validationMessage">A message describing the validation source.</param>
 /// <param name="validationErrors">
@@ -10,6 +11,11 @@
 /// </param>
 public class ValidationErrorTransition(string validationMessage, ValidationErrorDictionary validationErrors) : ITransitionTicketState
 {
+    /// <summary>
+    /// Allows a processor to create a new ticket in the desired state.
+    /// </summary>
+    /// <param name="ticket">The ticket to transition.</param>
+    /// <returns>A new ticket in the desired state.</returns>
     public Ticket TransitionState(Ticket ticket) => ticket with
                                                     {
                                                         DateClosed = DateTime.UtcNow,

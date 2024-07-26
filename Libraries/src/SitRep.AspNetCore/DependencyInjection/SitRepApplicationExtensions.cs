@@ -1,7 +1,20 @@
 ﻿namespace SitRep.AspNetCore.DependencyInjection;
 
+/// <summary>
+/// Adds sitrep API functionality to the application.
+/// </summary>
 public static class SitRepApplicationExtensions
 {
+    /// <summary>
+    /// Adds sitrep functionality, such as exception handling, API endpoints, etc.
+    /// </summary>
+    /// <param name="app">The application to extend.</param>
+    /// <returns>The application to allow additional chaining.</returns>
+    /// <example>
+    /// <code>
+    /// app.UseSitRep();
+    /// </code>
+    /// </example>
     public static WebApplication UseSitRep(this WebApplication app)
     {
         ConfigureExceptionHandling(app);

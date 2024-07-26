@@ -1,8 +1,7 @@
 ﻿namespace SitRep.Ticketing.Transitions;
 
 /// <summary>
-/// Transitions a ticket to a completed state, as the result of success.
-/// Specifies details when a ticket is transitioning to a completed successful state.
+/// Provides state that can be used to transition a ticket to a completed state, as the result of success.
 /// </summary>
 /// <param name="successMessage">A message describing the final state.</param>
 /// <param name="resourceIdentifier">
@@ -10,6 +9,11 @@
 /// </param>
 public class SuccessTransition(string successMessage, string? resourceIdentifier) : ITransitionTicketState
 {
+    /// <summary>
+    /// Allows a processor to create a new ticket in the desired state.
+    /// </summary>
+    /// <param name="ticket">The ticket to transition.</param>
+    /// <returns>A new ticket in the desired state.</returns>
     public Ticket TransitionState(Ticket ticket) => ticket with
                                                     {
                                                         DateClosed = DateTime.UtcNow,

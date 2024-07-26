@@ -1,7 +1,14 @@
 ﻿namespace SitRep.AspNetCore.Endpoints;
 
+/// <summary>
+/// API endpoint to close a ticket with success.
+/// </summary>
 public static class PutCloseTicketWithSuccessEndpoint
 {
+    /// <summary>
+    /// Registers the CloseTicketWithSuccess endpoint.
+    /// </summary>
+    /// <param name="endpointBuilder">The endpoint builder to extend.</param>
     public static void RegisterCloseTicketWithSuccess(this IEndpointRouteBuilder endpointBuilder)
     {
         endpointBuilder.MapPut(Routes.CloseTicketWithSuccess, ExecuteAsync)

@@ -31,9 +31,9 @@ public class InMemoryTicketStoreOptions
     /// the DiscardThreshold. The oldest tickets will be removed first.
     /// <para>
     /// This is the number to remove below the threshold, not in total, e.g. if the DiscardThreshold is 100 and the
-    /// DiscardCount is 50 and DiscardInterval is 10. When there are 100 tickets, the check will still miss,
-    /// as 100 does not excess the threshold so no action is taken. The next check at 110 tickets, will exceed the
-    /// threshold so 60 tickets will be removed, so th.
+    /// DiscardCount is 25 and DiscardInterval is 20. When there are 100 tickets, the check will still miss,
+    /// as 100 does not excess the threshold so no action is taken. The next check at 120 tickets, will exceed the
+    /// threshold so 45 tickets will be removed, i.e. the difference between the current 120 and the desired 75.
     /// </para>
     /// </summary>
     public int DiscardCount { get; set; } = 100;

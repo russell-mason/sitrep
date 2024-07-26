@@ -15,11 +15,13 @@ public class InMemoryTicketStore(IOptions<InMemoryTicketStoreOptions> options) :
     private readonly ConcurrentDictionary<Guid, Ticket> _tickets = [];
     private int _interval = 0;
 
+    /// <inheritdoc />
     public void Initialize()
     {
         // No initialization required
     }
 
+    /// <inheritdoc />
     public Task<Ticket?> GetTicketAsync(Guid trackingNumber)
     {
         var result = _tickets.TryGetValue(trackingNumber, out var ticket);
@@ -27,6 +29,7 @@ public class InMemoryTicketStore(IOptions<InMemoryTicketStoreOptions> options) :
         return Task.FromResult(result ? ticket : null);
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<Ticket>> GetTicketsAsync(string issuedTo)
     {
         // Force immediate LINQ evaluation
@@ -35,6 +38,7 @@ public class InMemoryTicketStore(IOptions<InMemoryTicketStoreOptions> options) :
         return Task.FromResult(tickets.AsEnumerable());
     }
 
+    /// <inheritdoc />
     public Task StoreTicketAsync(Ticket ticket)
     {
         _tickets.AddOrUpdate(ticket.TrackingNumber, ticket, (_, _) => ticket);

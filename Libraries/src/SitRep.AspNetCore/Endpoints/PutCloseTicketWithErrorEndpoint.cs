@@ -1,7 +1,14 @@
 ﻿namespace SitRep.AspNetCore.Endpoints;
 
+/// <summary>
+/// API endpoint to close a ticket with an error.
+/// </summary>
 public static class PutCloseTicketWithErrorEndpoint
 {
+    /// <summary>
+    /// Registers the CloseTicketWithError endpoint.
+    /// </summary>
+    /// <param name="endpointBuilder">The endpoint builder to extend.</param>
     public static void RegisterCloseTicketWithError(this IEndpointRouteBuilder endpointBuilder)
     {
         endpointBuilder.MapPut(Routes.CloseTicketWithError, ExecuteAsync)

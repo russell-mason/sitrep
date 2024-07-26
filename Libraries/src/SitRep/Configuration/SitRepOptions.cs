@@ -1,7 +1,7 @@
 ﻿namespace SitRep.Configuration;
 
 /// <summary>
-/// Provides options for the SitRep ticketing service.
+/// Provides options for the sitrep ticketing service.
 /// </summary>
 public class SitRepOptions
 {

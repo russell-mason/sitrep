@@ -5,11 +5,13 @@
 /// </summary>
 public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> options) : ITicketStore
 {
+    /// <inheritdoc />
     public void Initialize()
     {
         CreateIndexes();
     }
 
+    /// <inheritdoc />
     public async Task<Ticket?> GetTicketAsync(Guid trackingNumber)
     {
         await using var redis = await ConnectionMultiplexer.ConnectAsync(Options.ConnectionString);
@@ -21,6 +23,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
         return ticket;
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<Ticket>> GetTicketsAsync(string issuedTo)
     {
         await using var redis = await ConnectionMultiplexer.ConnectAsync(Options.ConnectionString);
@@ -33,6 +36,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
         return tickets;
     }
 
+    /// <inheritdoc />
     public async Task StoreTicketAsync(Ticket ticket)
     {
         await using var redis = await ConnectionMultiplexer.ConnectAsync(Options.ConnectionString);
@@ -42,6 +46,9 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
         await jsonCommands.SetAsync(key, "$", ticket, serializerOptions: Options.JsonSerializerOptions);
     }
 
+    /// <summary>
+    /// Drops any indexes created.
+    /// </summary>
     public void DropIndexes()
     {
         try
@@ -53,10 +60,13 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
         }
         catch (RedisServerException ex) when (ex.Message == "Unknown Index name")
         {
-            // Ignore
+            // Ignore if the index doesn't exist
         }
     }
 
+    /// <summary>
+    /// Creates required Redis Stack indexes.
+    /// </summary>
     public void CreateIndexes()
     {
         try
@@ -70,7 +80,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
         }
         catch (RedisServerException ex) when (ex.Message == "Index already exists")
         {
-            // Ignore
+            // Ignore if the index already exists
         }
     }
 

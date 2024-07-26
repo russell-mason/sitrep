@@ -58,7 +58,7 @@ public static class CombGuid
         // 16 Bytes = 128 Bit 
         int[] byteOrder = [10, 11, 12, 13, 14, 15, 8, 9, 6, 7, 4, 5, 0, 1, 2, 3];
 
-        //Swap to the correct order to be compared
+        // Swap to the correct order to be compared
         for (var index = 0; index < bytesInGuid; index++)
         {
             var byte1 = firstAsBytes[byteOrder[index]];

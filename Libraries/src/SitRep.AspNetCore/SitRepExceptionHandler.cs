@@ -1,7 +1,21 @@
 ﻿namespace SitRep.AspNetCore;
 
+/// <summary>
+/// Handles exceptions thrown by the sitrep API.
+/// </summary>
 public class SitRepExceptionHandler
 {
+    /// <summary>
+    /// Handles exceptions thrown by the application.
+    /// <para>
+    /// Returns a 404 when a TrackingNumberNotFoundException is thrown.
+    /// </para>
+    /// <para>
+    /// Return a 500 for all other unhandled exceptions.
+    /// </para>
+    /// </summary>
+    /// <param name="context">The current HTTP context</param>
+    /// <returns></returns>
     public static async Task HandlerException(HttpContext context)
     {
         var exceptionFeature = context.Features.GetRequiredFeature<IExceptionHandlerFeature>();

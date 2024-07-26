@@ -6,6 +6,7 @@
 /// <param name="ticketStore">The store that provides persistence for tickets.</param>
 public class TicketProcessor(ITicketStore ticketStore) : ITicketProcessor
 {
+    /// <inheritdoc />
     public async Task<Ticket> CreateTicketAsync(ICreateTicketState creator)
     {
         var ticket = creator.CreateState();
@@ -15,6 +16,7 @@ public class TicketProcessor(ITicketStore ticketStore) : ITicketProcessor
         return ticket;
     }
 
+    /// <inheritdoc />
     public async Task<Ticket> TransitionTicketAsync(Guid trackingNumber, ITransitionTicketState transition)
     {
         var ticket = await LoadAsync(trackingNumber) ?? throw new TrackingNumberNotFoundException(trackingNumber);
@@ -27,14 +29,14 @@ public class TicketProcessor(ITicketStore ticketStore) : ITicketProcessor
     }
 
     /// <summary>
-    /// Allows derived implementations to customise the loading process.
+    /// Allows derived implementations to customize the loading process.
     /// </summary>
     /// <param name="trackingNumber"></param>
     /// <returns></returns>
     protected virtual Task<Ticket?> LoadAsync(Guid trackingNumber) => ticketStore.GetTicketAsync(trackingNumber);
 
     /// <summary>
-    /// Allows derived implementations to customise the saving process.
+    /// Allows derived implementations to customize the saving process.
     /// </summary>
     /// <param name="ticketStatus"></param>
     /// <returns></returns>

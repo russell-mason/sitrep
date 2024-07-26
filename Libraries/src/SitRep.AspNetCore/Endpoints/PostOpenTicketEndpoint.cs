@@ -1,7 +1,14 @@
 ﻿namespace SitRep.AspNetCore.Endpoints;
 
+/// <summary>
+/// API endpoint to open a ticket.
+/// </summary>
 public static class PostOpenTicketEndpoint
 {
+    /// <summary>
+    /// Registers the OpenTicket endpoint.
+    /// </summary>
+    /// <param name="endpointBuilder">The endpoint builder to extend.</param>
     public static void RegisterOpenTicket(this IEndpointRouteBuilder endpointBuilder)
     {
         endpointBuilder.MapPost(Routes.OpenTicket, ExecuteAsync)
