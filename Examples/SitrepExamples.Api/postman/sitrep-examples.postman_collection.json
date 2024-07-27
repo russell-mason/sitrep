@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "3f8d5865-ed50-4850-a173-24b6fe6df9ba",
+		"name": "sitrep-examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8975"
+	},
+	"item": [
+		{
+			"name": "Sanity Checks",
+			"item": [
+				{
+					"name": "Ok",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-host}}/sanity-checks/ok",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sanity-checks",
+								"ok"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Not Found",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-host}}/sanity-checks/not-found",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sanity-checks",
+								"not-found"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Core API",
+			"item": [
+				{
+					"name": "Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-host}}/sitrep/ping",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Ticket",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-host}}/sitrep/tickets/{{tracking-number}}",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"tickets",
+								"{{tracking-number}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tickets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-host}}/sitrep/tickets?issuedTo={{issued-to}}",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "issuedTo",
+									"value": "{{issued-to}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Open Ticket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"issuedTo\": \"john.smith\",\r\n    \"issuedOnBehalfOf\": \"john.smith\",\r\n    \"reasonForIssuing\": \"Test - Create Ticket 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-host}}/sitrep/tickets",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Progress Ticket",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"Progress State 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-host}}/sitrep/tickets/{{tracking-number}}",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"tickets",
+								"{{tracking-number}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close Ticket With Success",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"Closed With Success\",\r\n    \"resourceIdentifier\": \"http://example.com/resource\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-host}}/sitrep/tickets/closed/{{tracking-number}}",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"tickets",
+								"closed",
+								"{{tracking-number}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close Ticket With Error",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"Closed With Error\",\r\n    \"errorCode\": \"ERR-101\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-host}}/sitrep/tickets/errored/{{tracking-number}}",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"tickets",
+								"errored",
+								"{{tracking-number}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Close Ticket With Validation Errors",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"Closed With Validation Error\",\r\n    \"errors\": {\r\n        \"Name\": [\"Invalid Name\"],\r\n        \"Code\": [\"Code must start with 'ABC'\", \"Code must be 10 characters or less.\"]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-host}}/sitrep/tickets/invalid/{{tracking-number}}",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"sitrep",
+								"tickets",
+								"invalid",
+								"{{tracking-number}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

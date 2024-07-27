@@ -1,0 +1,12 @@
+global using Bogus;
+global using FluentAssertions;
+global using FluentAssertions.Extensions;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
+global using Moq;
+global using NUnit.Framework;
+global using Sitrep.Abstractions;
+global using Sitrep.Configuration;
+global using Sitrep.DependencyInjection;
+global using Sitrep.Ticketing;
+global using Sitrep.Ticketing.Transitions;

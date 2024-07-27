@@ -1,0 +1,15 @@
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Diagnostics;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Http.Features;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Routing;
+global using Microsoft.Extensions.DependencyInjection;
+global using System.Net;
+global using Sitrep.Abstractions;
+global using Sitrep.AspNetCore.Configuration;
+global using Sitrep.AspNetCore.Endpoints;
+global using Sitrep.AspNetCore.Endpoints.Models;
+global using Sitrep.DependencyInjection;
+global using Sitrep.Ticketing;
+global using Sitrep.Ticketing.Transitions;
