@@ -24,7 +24,7 @@ public static class GetTicketEndpoint
 
         if (ticket == null)
         {
-            return Results.NotFound();
+            return SitrepResults.TicketNotFound(request.TrackingNumber);
         }
 
         var response = new TicketResponse(ticket);
