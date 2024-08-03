@@ -12,6 +12,21 @@ public class ProgressTransitionTests
     }
 
     [Test]
+    public void Action_IsTicketTransitionProgress()
+    {
+        // Arrange
+        var progressMessage = _faker.Random.AlphaNumeric(40);
+
+        var transition = new ProgressTransition(progressMessage);
+
+        // Act
+        var action = transition.Action;
+
+        // Assert
+        action.Should().Be("ticket:transition:progress");
+    }
+
+    [Test]
     public void TransitionState_SetsTicketProperties()
     {
         // Arrange

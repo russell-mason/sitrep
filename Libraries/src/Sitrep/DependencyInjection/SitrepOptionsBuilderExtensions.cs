@@ -21,7 +21,7 @@ public static class SitrepOptionsBuilderExtensions
     /// builder.Services.AddSitrep(configureOptions => configureOptions.UseInMemoryTicketStore(storeOptions => { // Do something with storeOptions }));
     /// </code>
     /// </example>
-    public static SitrepOptionsBuilder UseInMemoryTicketStore(this SitrepOptionsBuilder optionsBuilder,
+    public static SitrepOptionsBuilder UseInMemoryTicketStore(this SitrepOptionsBuilder optionsBuilder, 
                                                               Action<InMemoryTicketStoreOptions>? configureOptions = null)
     {
         optionsBuilder.Services.AddSingleton<ITicketStore, InMemoryTicketStore>();

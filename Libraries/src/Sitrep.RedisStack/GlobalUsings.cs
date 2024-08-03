@@ -4,7 +4,7 @@ global using NRedisStack.RedisStackCommands;
 global using NRedisStack.Search;
 global using NRedisStack.Search.Literals.Enums;
 global using Sitrep.Abstractions;
-global using Sitrep.DependencyInjection;
+global using Sitrep.Configuration;
 global using Sitrep.RedisStack.Configuration;
 global using Sitrep.RedisStack.Ticketing;
 global using Sitrep.Ticketing;

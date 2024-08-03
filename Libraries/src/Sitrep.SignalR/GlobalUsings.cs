@@ -1,0 +1,13 @@
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Http.Json;
+global using Microsoft.AspNetCore.SignalR;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
+global using Sitrep.Abstractions;
+global using Sitrep.AspNetCore.Configuration;
+global using Sitrep.Configuration;
+global using Sitrep.SignalR.Configuration;
+global using Sitrep.SignalR.Endpoints;
+global using Sitrep.SignalR.Identity;
+global using Sitrep.SignalR.Ticketing;
+global using Sitrep.Ticketing.Events;

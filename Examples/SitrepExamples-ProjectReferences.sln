@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sitrep.AspNetCore", "..\Lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sitrep.RedisStack", "..\Libraries\src\Sitrep.RedisStack\Sitrep.RedisStack.csproj", "{0B14861C-6781-49A7-9F3E-6127DE1B8083}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sitrep.SignalR", "..\Libraries\src\Sitrep.SignalR\Sitrep.SignalR.csproj", "{D5989E57-DFC3-4944-92ED-B28C99802EB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0B14861C-6781-49A7-9F3E-6127DE1B8083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B14861C-6781-49A7-9F3E-6127DE1B8083}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B14861C-6781-49A7-9F3E-6127DE1B8083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5989E57-DFC3-4944-92ED-B28C99802EB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5989E57-DFC3-4944-92ED-B28C99802EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5989E57-DFC3-4944-92ED-B28C99802EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5989E57-DFC3-4944-92ED-B28C99802EB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

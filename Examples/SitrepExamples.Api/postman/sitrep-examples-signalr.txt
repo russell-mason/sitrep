@@ -1,0 +1,17 @@
+Because Postman doesn't provide an Export feature for WebSocket collections, this outlines a basic example:
+
+1. Create a new WebSocket request and set the URL:
+{{websocket-host}}/sitrep/ticket-hub
+
+2. Add a header under the "Headers" section:
+Key: Fake-User-Id
+Value: john.smith
+
+3. Connect via the "Connect" button
+
+4. Add a protocol initialization message to the "Message" section (The U+001E RS record separator character is required)): 
+{"protocol":"json","version":1}
+
+5. Send the message via the "Send" button
+
+As tickets are created or updated, so long as they have an "issuedTo" value of "john.smith", details will automatically appear under the "Response" section.

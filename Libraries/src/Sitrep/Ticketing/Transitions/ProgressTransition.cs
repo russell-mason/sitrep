@@ -7,6 +7,11 @@
 public class ProgressTransition(string progressMessage) : ITransitionTicketState
 {
     /// <summary>
+    /// Gets a key-based description that indicates the action this transition represents.
+    /// </summary>
+    public string Action => "ticket:transition:progress";
+
+    /// <summary>
     /// Allows a processor to create a new ticket in the desired state.
     /// </summary>
     /// <param name="ticket">The ticket to transition.</param>

@@ -58,7 +58,7 @@ public class SitrepOptionsBuilderExtensionsTests
 
         var options = serviceProvider.GetRequiredService<IConfigureOptions<InMemoryTicketStoreOptions>>();
 
-        var action = ((ConfigureNamedOptions<InMemoryTicketStoreOptions>) options).Action;
+        var action = ((ConfigureNamedOptions<InMemoryTicketStoreOptions>)options).Action;
 
         action.Should().Be(configureOptions);
     }

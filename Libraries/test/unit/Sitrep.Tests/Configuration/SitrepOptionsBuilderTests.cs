@@ -1,4 +1,4 @@
-﻿namespace Sitrep.Tests.DependencyInjection;
+﻿namespace Sitrep.Tests.Configuration;
 
 [TestFixture]
 public class SitrepOptionsBuilderTests
@@ -58,12 +58,12 @@ public class SitrepOptionsBuilderTests
 
         var sitrepOptions = new SitrepOptions();
 
-        var action = ((ConfigureNamedOptions<SitrepOptions>) options).Action!;
+        var action = ((ConfigureNamedOptions<SitrepOptions>)options).Action!;
         action(sitrepOptions);
 
         var postOptions = serviceProvider.GetRequiredService<IPostConfigureOptions<SitrepOptions>>();
 
-        var postAction = ((PostConfigureOptions<SitrepOptions>) postOptions).Action!;
+        var postAction = ((PostConfigureOptions<SitrepOptions>)postOptions).Action!;
         postAction(sitrepOptions);
 
         Ticket.ExpirationPeriodInMinutes.Should().Be(periodInMinutes);
@@ -85,7 +85,7 @@ public class SitrepOptionsBuilderTests
 
         var options = serviceProvider.GetRequiredService<IConfigureOptions<SitrepOptions>>();
 
-        var action = ((ConfigureNamedOptions<SitrepOptions>) options).Action;
+        var action = ((ConfigureNamedOptions<SitrepOptions>)options).Action;
 
         action.Should().Be(configureOptions);
     }

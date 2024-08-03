@@ -12,6 +12,21 @@ public class SuccessTransitionTests
     }
 
     [Test]
+    public void Action_IsTicketTransitionSuccess()
+    {
+        // Arrange
+        var successMessage = _faker.Random.AlphaNumeric(40);
+
+        var transition = new SuccessTransition(successMessage);
+
+        // Act
+        var action = transition.Action;
+
+        // Assert
+        action.Should().Be("ticket:transition:success");
+    }
+
+    [Test]
     public void TransitionState_SetsTicketProperties()
     {
         // Arrange

@@ -12,6 +12,23 @@ public class OpenTicketTests
     }
 
     [Test]
+    public void Action_IsTicketTransitionOpen()
+    {
+        // Arrange
+        var issuedTo = _faker.Random.AlphaNumeric(10);
+        var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
+        var reasonForIssuing = _faker.Random.AlphaNumeric(30);
+
+        var creator = new OpenTicket(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+
+        // Act
+        var action = creator.Action;
+
+        // Assert
+        action.Should().Be("ticket:create:open");
+    }
+
+    [Test]
     public void CreateState_CreatesTicketWithPropertiesSet()
     {
         // Arrange

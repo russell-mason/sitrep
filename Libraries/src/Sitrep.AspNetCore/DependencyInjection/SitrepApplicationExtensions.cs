@@ -9,17 +9,26 @@ public static class SitrepApplicationExtensions
     /// Adds sitrep functionality, such as exception handling, API endpoints, etc.
     /// </summary>
     /// <param name="app">The application to extend.</param>
+    /// <param name="configureOptions">An optional callback allowing custom configuration.</param>
     /// <returns>The application to allow additional chaining.</returns>
     /// <example>
     /// <code>
     /// app.UseSitrep();
     /// </code>
     /// </example>
-    public static WebApplication UseSitrep(this WebApplication app)
+    /// <example>
+    /// <code>
+    /// app.UseSitrep(configureOptions => { // Do something with configureOptions });
+    /// </code>
+    /// </example>
+    public static WebApplication UseSitrep(this WebApplication app, 
+                                           Action<SitrepApplicationBuilder>? configureOptions = null)
     {
         ConfigureExceptionHandling(app);
         RegisterEndpoints(app);
         InitializeTicketStore(app);
+
+        configureOptions?.Invoke(new SitrepApplicationBuilder(app));
 
         return app;
     }

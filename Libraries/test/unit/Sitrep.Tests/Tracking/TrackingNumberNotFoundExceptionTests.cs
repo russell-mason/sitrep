@@ -12,6 +12,19 @@ public class TrackingNumberNotFoundExceptionTests
     }
 
     [Test]
+    public void Type_IsPublicException()
+    {
+        // Arrange
+        var trackingNumber = CombGuid.NewGuid();
+
+        // Act
+        var exception = new TrackingNumberNotFoundException(trackingNumber);
+
+        // Assert
+        exception.Should().BeAssignableTo<PublicException>();
+    }
+
+    [Test]
     public void Constructor_WhenNoMessageIsProvided_ThenDefaultMessageIsUsed()
     {
         // Arrange

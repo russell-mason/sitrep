@@ -9,4 +9,5 @@ global using Sitrep.Abstractions;
 global using Sitrep.Configuration;
 global using Sitrep.DependencyInjection;
 global using Sitrep.Ticketing;
+global using Sitrep.Ticketing.Events;
 global using Sitrep.Ticketing.Transitions;

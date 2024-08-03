@@ -24,9 +24,14 @@ public static class SitrepServiceCollectionExtensions
     public static IServiceCollection AddSitrep(this IServiceCollection services,
                                                Action<SitrepOptionsBuilder>? configureOptions = null)
     {
+        // Default implementations
         services.AddSingleton<ITicketProcessor, TicketProcessor>();
+        services.AddSingleton<ITicketNotification, TicketNotification>();
 
-        configureOptions?.Invoke(new SitrepOptionsBuilder(services));
+        var sitrepOptionsBuilder = new SitrepOptionsBuilder(services);
+        sitrepOptionsBuilder.UseInMemoryTicketStore();
+
+        configureOptions?.Invoke(sitrepOptionsBuilder);
 
         return services;
     }

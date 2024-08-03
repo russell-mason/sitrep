@@ -6,7 +6,7 @@
 public interface ITicketProcessor
 {
     /// <summary>
-    /// Creates, and stores a new ticket using the specified ticket creator.
+    /// Creates, and stores, a new ticket using the specified ticket creator.
     /// </summary>
     /// <param name="creator">The implementation that creates the ticket.</param>
     /// <returns>The newly created ticket.</returns>

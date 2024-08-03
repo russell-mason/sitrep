@@ -12,7 +12,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
     }
 
     /// <inheritdoc />
-    public async Task<Ticket?> GetTicketAsync(Guid trackingNumber)
+    public virtual async Task<Ticket?> GetTicketAsync(Guid trackingNumber)
     {
         await using var redis = await ConnectionMultiplexer.ConnectAsync(Options.ConnectionString);
         var jsonCommands = redis.GetDatabase().JSON();
@@ -24,7 +24,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<Ticket>> GetTicketsAsync(string issuedTo)
+    public virtual async Task<IEnumerable<Ticket>> GetTicketsAsync(string issuedTo)
     {
         await using var redis = await ConnectionMultiplexer.ConnectAsync(Options.ConnectionString);
         var searchCommands = redis.GetDatabase().FT();
@@ -37,7 +37,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
     }
 
     /// <inheritdoc />
-    public async Task StoreTicketAsync(Ticket ticket)
+    public virtual async Task StoreTicketAsync(Ticket ticket)
     {
         await using var redis = await ConnectionMultiplexer.ConnectAsync(Options.ConnectionString);
         var jsonCommands = redis.GetDatabase().JSON();
@@ -49,7 +49,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
     /// <summary>
     /// Drops any indexes created.
     /// </summary>
-    public void DropIndexes()
+    public virtual void DropIndexes()
     {
         try
         {
@@ -67,7 +67,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
     /// <summary>
     /// Creates required Redis Stack indexes.
     /// </summary>
-    public void CreateIndexes()
+    public virtual void CreateIndexes()
     {
         try
         {
@@ -84,7 +84,12 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
         }
     }
 
-    private RedisStackTicketStoreOptions Options { get; } = options.Value;
+    /// <summary>
+    /// Creates a Redis key for the ticket.
+    /// </summary>
+    /// <param name="trackingNumber">The tracking number to provide a unique identifier with.</param>
+    /// <returns>The Redis key.</returns>
+    protected virtual string CreateKey(Guid trackingNumber) => $"{Options.TicketKeyPrefix}{trackingNumber}";
 
-    private string CreateKey(Guid trackingNumber) => $"{Options.TicketKeyPrefix}{trackingNumber}";
+    private RedisStackTicketStoreOptions Options { get; } = options.Value;
 }

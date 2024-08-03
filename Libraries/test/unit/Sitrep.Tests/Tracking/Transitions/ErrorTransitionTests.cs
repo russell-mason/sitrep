@@ -12,6 +12,22 @@ public class ErrorTransitionTests
     }
 
     [Test]
+    public void Action_IsTicketTransitionError()
+    {
+        // Arrange
+        var errorMessage = _faker.Random.AlphaNumeric(40);
+        var errorCode = _faker.Random.AlphaNumeric(50);
+
+        var transition = new ErrorTransition(errorMessage, errorCode);
+
+        // Act
+        var action = transition.Action;
+
+        // Assert
+        action.Should().Be("ticket:transition:error");
+    }
+
+    [Test]
     public void TransitionState_SetsTicketProperties()
     {
         // Arrange

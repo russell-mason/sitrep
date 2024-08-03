@@ -17,7 +17,7 @@ public class InMemoryTicketStoreOptions
     public bool DiscardExpired { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the number of tickets that can be stores before a check is made to determine if the
+    /// Gets or sets the number of tickets that can be stored before a check is made to determine if the
     /// oldest tickets should be removed.
     /// <para>
     /// N.B. Only closed tickets are considered for removal. Therefore, the number of tickets in the store

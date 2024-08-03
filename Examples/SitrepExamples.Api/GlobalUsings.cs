@@ -1,7 +1,6 @@
-global using Microsoft.AspNetCore.Http.Json;
 global using Sitrep.AspNetCore.DependencyInjection;
 global using Sitrep.DependencyInjection;
-global using Sitrep.RedisStack.DependencyInjection;
+global using Sitrep.SignalR.DependencyInjection;
 global using SitrepExamples.Api.DependencyInjection;
 global using SitrepExamples.Api.Endpoints.SanityChecks;
 global using System.Text.Json;

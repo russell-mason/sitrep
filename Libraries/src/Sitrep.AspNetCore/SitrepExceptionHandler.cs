@@ -11,7 +11,10 @@ public class SitrepExceptionHandler
     /// Returns a 404 when a TrackingNumberNotFoundException is thrown.
     /// </para>
     /// <para>
-    /// Return a 500 for all other unhandled exceptions.
+    /// Return a 500 with a message when a PublicException is thrown.
+    /// </para>
+    /// <para>
+    /// All other unhandled exceptions return a basic 500.
     /// </para>
     /// </summary>
     /// <param name="context">The current HTTP context</param>
@@ -21,18 +24,29 @@ public class SitrepExceptionHandler
         var exceptionFeature = context.Features.GetRequiredFeature<IExceptionHandlerFeature>();
         var exception = exceptionFeature.Error;
 
-        if (exception is TrackingNumberNotFoundException trackingNumberNotFoundException)
+        switch (exception)
         {
-            var error = new ErrorMessageResponse(trackingNumberNotFoundException.TrackingNumber, "Ticket not found");
-            var result = Results.NotFound(error);
+            case TrackingNumberNotFoundException trackingNumberNotFoundException:
+            {
+                var result = SitrepResults.TicketNotFound(trackingNumberNotFoundException.TrackingNumber);
 
-            await result.ExecuteAsync(context);
-        }
-        else
-        {
-            var result = Results.StatusCode((int) HttpStatusCode.InternalServerError);
+                await result.ExecuteAsync(context);
+                break;
+            }
+            case PublicException publicException:
+            {
+                var result = SitrepResults.PublicInternalServerError(publicException.Message);
 
-            await result.ExecuteAsync(context);
+                await result.ExecuteAsync(context);
+                break;
+            }
+            default:
+            {
+                var result = Results.StatusCode((int) HttpStatusCode.InternalServerError);
+
+                await result.ExecuteAsync(context);
+                break;
+            }
         }
     }
 }

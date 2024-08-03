@@ -5,7 +5,7 @@
 /// or because the ticket has expired.
 /// </summary>
 [Serializable]
-public class TrackingNumberNotFoundException : Exception
+public class TrackingNumberNotFoundException : PublicException
 {
     /// <summary>
     /// Creates a new instance of the TrackingNumberNotFoundException class.

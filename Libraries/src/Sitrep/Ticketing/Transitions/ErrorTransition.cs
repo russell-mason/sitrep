@@ -10,6 +10,11 @@
 public class ErrorTransition(string errorMessage, string? errorCode) : ITransitionTicketState
 {
     /// <summary>
+    /// Gets a key-based description that indicates the action this transition represents.
+    /// </summary>
+    public string Action => "ticket:transition:error";
+
+    /// <summary>
     /// Allows a processor to create a new ticket in the desired state.
     /// </summary>
     /// <param name="ticket">The ticket to transition.</param>

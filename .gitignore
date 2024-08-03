@@ -351,3 +351,4 @@ MigrationBackup/
 Libraries/nuget/sitrep/
 Libraries/nuget/sitrep.aspnetcore/
 Libraries/nuget/sitrep.redisstack/
+Libraries/nuget/sitrep.signalr/

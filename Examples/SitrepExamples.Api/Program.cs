@@ -7,8 +7,13 @@ builder.Services
 
 builder.Services.AddExamples();
 
-builder.Services.AddSitrep(configureOptions => configureOptions.UseAspNetCore().UseInMemoryTicketStore());
-//builder.Services.AddSitrep(configureOptions => configureOptions.UseAspNetCore().UseRedisStackTicketStore());
+builder.Services.AddSitrep(optionsBuilder => optionsBuilder.UseAspNetCore()
+                                                           .UseInMemoryTicketStore()
+                                                           .UseSignalRNotifications());
+
+//builder.Services.AddSitrep(optionsBuilder => optionsBuilder.UseAspNetCore()
+//                                                           .UseRedisStackTicketStore()
+//                                                           .UseSignalRNotifications());
 
 var app = builder.Build();
 
@@ -23,6 +28,6 @@ app.UseHttpsRedirection();
 
 app.UseExamples();
 
-app.UseSitrep();
+app.UseSitrep(appBuilder => appBuilder.UseSignalRNotifications());
 
 app.Run();

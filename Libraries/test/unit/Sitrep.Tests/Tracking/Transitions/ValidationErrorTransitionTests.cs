@@ -12,6 +12,22 @@ public class ValidationErrorTransitionTests
     }
 
     [Test]
+    public void Action_IsTicketTransitionValidationError()
+    {
+        // Arrange
+        var validationMessage = _faker.Random.AlphaNumeric(40);
+        var validationErrors = CreateValidationErrors();
+
+        var transition = new ValidationErrorTransition(validationMessage, validationErrors);
+
+        // Act
+        var action = transition.Action;
+
+        // Assert
+        action.Should().Be("ticket:transition:validation-error");
+    }
+
+    [Test]
     public void TransitionState_SetsTicketProperties()
     {
         // Arrange

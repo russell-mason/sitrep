@@ -4,13 +4,18 @@
 /// Provides state that can be used to transition a ticket to a completed and failed state, as the result of
 /// validation errors.
 /// </summary>
-/// <param name="validationMessage">A message describing the validation source.</param>
+/// <param name="validationMessage">A message describing the validation issue.</param>
 /// <param name="validationErrors">
 /// A list of validation errors.
 /// The key should be a property name, and the values should be the validation errors associated with that property.
 /// </param>
 public class ValidationErrorTransition(string validationMessage, ValidationErrorDictionary validationErrors) : ITransitionTicketState
 {
+    /// <summary>
+    /// Gets a key-based description that indicates the action this transition represents.
+    /// </summary>
+    public string Action => "ticket:transition:validation-error";
+
     /// <summary>
     /// Allows a processor to create a new ticket in the desired state.
     /// </summary>

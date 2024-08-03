@@ -4,16 +4,16 @@
 /// Represents a ticket allowing the progress of an asynchronous process to be tracked.
 /// </summary>
 /// <param name="TrackingNumber">A tracking number that can be used to track the current status of a ticket.</param>
-/// <param name="IssuedTo">A unique identifier that indicates who the ticket was issued to.</param>
+/// <param name="IssuedTo">An identifier that indicates who the ticket was issued to.</param>
 /// <param name="IssuedOnBehalfOf">
-/// A unique identifier that indicates who started the process. This may be the same as IssuedTo, or may be a
+/// An identifier that indicates who started the process. This may be the same as IssuedTo, or may be a
 /// system account when one process spawns another.
 /// </param>
 /// <param name="ReasonForIssuing">A description that explains what the purpose of the process is.</param>
 public record Ticket(Guid TrackingNumber, string IssuedTo, string IssuedOnBehalfOf, string ReasonForIssuing)
 {
     /// <summary>
-    /// Gets or sets the default expiration time for a ticket in minutes. Defaults to 7 days.
+    /// Gets or sets the default expiration period for a ticket in minutes. Defaults to 7 days.
     /// </summary>
     public static int ExpirationPeriodInMinutes { get; set; } = 60 * 24 * 7; // 7 days = 10080 minutes;
 

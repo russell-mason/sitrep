@@ -4,15 +4,11 @@
 public class SitrepServiceCollectionExtensionsTests
 {
     private ServiceCollection _serviceCollection;
-    private Mock<ITicketStore> _ticketStoreMock;
 
     [SetUp]
     public void SetUp()
     {
         _serviceCollection = [];
-        _ticketStoreMock = new Mock<ITicketStore>();
-
-        _serviceCollection.AddSingleton(_ticketStoreMock.Object);
     }
 
     [Test]
@@ -27,6 +23,34 @@ public class SitrepServiceCollectionExtensionsTests
         var serviceProvider = _serviceCollection.BuildServiceProvider();
 
         serviceProvider.GetRequiredService<ITicketProcessor>().Should().BeOfType<TicketProcessor>();
+    }
+
+    [Test]
+    public void AddSitrep_RegistersDefaultsTicketStore()
+    {
+        // Arrange
+
+        // Act
+        _serviceCollection.AddSitrep();
+
+        // Assert
+        var serviceProvider = _serviceCollection.BuildServiceProvider();
+
+        serviceProvider.GetRequiredService<ITicketStore>().Should().BeOfType<InMemoryTicketStore>();
+    }
+
+    [Test]
+    public void AddSitrep_RegistersDefaultTicketNotification()
+    {
+        // Arrange
+
+        // Act
+        _serviceCollection.AddSitrep();
+
+        // Assert
+        var serviceProvider = _serviceCollection.BuildServiceProvider();
+
+        serviceProvider.GetRequiredService<ITicketNotification>().Should().BeOfType<TicketNotification>();
     }
 
     [Test]

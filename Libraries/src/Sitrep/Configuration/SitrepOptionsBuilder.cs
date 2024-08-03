@@ -1,4 +1,4 @@
-﻿namespace Sitrep.DependencyInjection;
+﻿namespace Sitrep.Configuration;
 
 /// <summary>
 /// Allows extension methods to be chained together for configuring sitrep options.
