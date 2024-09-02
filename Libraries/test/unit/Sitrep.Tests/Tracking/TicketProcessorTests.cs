@@ -18,17 +18,17 @@ public class TicketProcessorTests
     }
 
     [Test]
-    public async Task CreateTicketAsync_SetsPendingStage()
+    public async Task OpenTicketAsync_SetsPendingStage()
     {
         // Arrange
         var issuedTo = _faker.Random.AlphaNumeric(10);
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var creator = new TestCreateTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var opener = new TestOpenTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
         // Act
-        var ticket = await _ticketProcessor.CreateTicketAsync(creator);
+        var ticket = await _ticketProcessor.OpenTicketAsync(opener);
 
         // Assert
         ticket.ProcessingState.Should().Be(ProcessingState.Pending);
@@ -38,45 +38,45 @@ public class TicketProcessorTests
     }
 
     [Test]
-    public async Task CreateTicketAsync_StoresTicket()
+    public async Task OpenTicketAsync_StoresTicket()
     {
         // Arrange
         var issuedTo = _faker.Random.AlphaNumeric(10);
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var creator = new TestCreateTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var opener = new TestOpenTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
         // Act
-        var ticket = await _ticketProcessor.CreateTicketAsync(creator);
+        var ticket = await _ticketProcessor.OpenTicketAsync(opener);
 
         // Assert
         _ticketStoreMock.Verify(tts => tts.StoreTicketAsync(ticket), Times.Once);
     }
 
     [Test]
-    public async Task CreateTicketAsync_SendsTicketCreationNotification()
+    public async Task OpenTicketAsync_SendsTicketCreationNotification()
     {
         // Arrange
         var issuedTo = _faker.Random.AlphaNumeric(10);
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var creator = new TestCreateTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var opener = new TestOpenTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
 
-        CreatedEvent? capturedEvent = null;
+        OpenEvent? capturedEvent = null;
 
-        _ticketNotificationMock.Setup(tn => tn.NotifyAsync(It.IsAny<CreatedEvent>()))
-                               .Callback<CreatedEvent>(createdEvent => capturedEvent = createdEvent);
+        _ticketNotificationMock.Setup(tn => tn.NotifyAsync(It.IsAny<OpenEvent>()))
+                               .Callback<OpenEvent>(openEvent => capturedEvent = openEvent);
 
         // Act
-        var ticket = await _ticketProcessor.CreateTicketAsync(creator);
+        var ticket = await _ticketProcessor.OpenTicketAsync(opener);
 
         // Assert
-        _ticketNotificationMock.Verify(tn => tn.NotifyAsync(It.IsAny<CreatedEvent>()), Times.Once);
+        _ticketNotificationMock.Verify(tn => tn.NotifyAsync(It.IsAny<OpenEvent>()), Times.Once);
 
         capturedEvent.Should().NotBeNull();
-        capturedEvent!.Action.Should().Be(creator.Action);
+        capturedEvent!.Action.Should().Be(opener.Action);
         capturedEvent.Ticket.Should().BeEquivalentTo(ticket);
     }
 
@@ -106,8 +106,8 @@ public class TicketProcessorTests
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var creator = new TestCreateTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
-        var startingTicket = creator.CreateState();
+        var opener = new TestOpenTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var startingTicket = opener.CreateState();
 
         var transition = new TestTransitionTicketState();
 
@@ -129,8 +129,8 @@ public class TicketProcessorTests
         var issuedOnBehalfOf = _faker.Random.AlphaNumeric(20);
         var reasonForIssuing = _faker.Random.AlphaNumeric(30);
 
-        var creator = new TestCreateTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
-        var startingTicket = creator.CreateState();
+        var opener = new TestOpenTicketState(issuedTo, issuedOnBehalfOf, reasonForIssuing);
+        var startingTicket = opener.CreateState();
 
         var transition = new TestTransitionTicketState();
 
@@ -154,7 +154,7 @@ public class TicketProcessorTests
         capturedEvent.PostTransitionTicket.Should().BeEquivalentTo(ticket);
     }
 
-    private class TestCreateTicketState(string issuedTo, string issuedOnBehalfOf, string reasonForIssuing) : ICreateTicketState
+    private class TestOpenTicketState(string issuedTo, string issuedOnBehalfOf, string reasonForIssuing) : IOpenTicketState
     {
         private readonly Guid _trackingNumber = CombGuid.NewGuid();
 

@@ -1,0 +1,14 @@
+﻿<div class="tickets">
+    @for (var index = 0; index < Tickets.Count; index++)
+    {
+        <SitrepTicketCard Ticket="@Tickets[index]" CardIndex="@index"></SitrepTicketCard>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets the tickets to display.
+    /// </summary>
+    [Parameter]
+    public List<Ticket> Tickets { get; set; } = [];
+}

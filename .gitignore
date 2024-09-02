@@ -349,6 +349,8 @@ healthchecksdb
 MigrationBackup/
 
 Libraries/nuget/sitrep/
+Libraries/nuget/sitrep.apiclient/
 Libraries/nuget/sitrep.aspnetcore/
 Libraries/nuget/sitrep.redisstack/
 Libraries/nuget/sitrep.signalr/
+Libraries/nuget/sitrepui.blazor/

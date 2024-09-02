@@ -20,7 +20,7 @@ public record Ticket(Guid TrackingNumber, string IssuedTo, string IssuedOnBehalf
     /// <summary>
     /// Gets the date and time the ticket was issued.
     /// </summary>
-    public DateTime DateIssued { get; } = DateTime.UtcNow;
+    public DateTime DateIssued { get; init; } = DateTime.UtcNow;
 
     /// <summary>
     /// Gets the date and time the ticket expires.

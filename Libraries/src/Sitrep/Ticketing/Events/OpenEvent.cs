@@ -1,11 +1,11 @@
 ﻿namespace Sitrep.Ticketing.Events;
 
 /// <summary>
-/// Represents an event that's raised when a ticket is created.
+/// Represents an event that's raised when a ticket is opened.
 /// </summary>
 /// <param name="action">A key-based description that indicates the action the state represents.</param>
 /// <param name="ticket">The ticket that was created.</param>
-public class CreatedEvent(string action, Ticket ticket)
+public class OpenEvent(string action, Ticket ticket)
 {
     /// <summary>
     /// Gets a key-based description that indicates the action the state represents.

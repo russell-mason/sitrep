@@ -1,0 +1,74 @@
+﻿@implements IDisposable
+@inject ISitrepCoreApi SitrepCoreApi
+@inject ISignalRTicketHubConnector TicketHubConnector
+
+<div class="ticketing">
+    <SitrepTicketCards Tickets="@Tickets"></SitrepTicketCards>
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets the user to filter tickets by.
+    /// </summary>
+    [Parameter]
+    public string? IssuedTo { get; set; }
+
+    /// <summary>
+    /// Ensures all SignalR hub event handlers are unregistered.
+    /// </summary>
+    public void Dispose() => UnregisterFromHub();
+
+    /// <summary>
+    /// Refreshes the list of tickets when parameters are set by the parent component.
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnParametersSetAsync() => await Refresh();
+
+    /// <summary>
+    /// Ensures all SignalR hub event handlers are registered.
+    /// </summary>
+    protected override void OnInitialized() => RegisterWithHub();
+
+    private List<Ticket> Tickets { get; set; } = [];
+
+    private async Task Refresh()
+    {
+        var list = await SitrepCoreApi.GetTickets(IssuedTo ?? string.Empty);
+
+        Tickets = list.Tickets.ToList();
+    }
+
+    private void RegisterWithHub()
+    {
+        TicketHubConnector.OnTicketOpened += AddTicket;
+        TicketHubConnector.OnTicketProgressed += TransitionTicket;
+        TicketHubConnector.OnTicketClosedWithSuccess += TransitionTicket;
+        TicketHubConnector.OnTicketClosedWithValidationErrors += TransitionTicket;
+        TicketHubConnector.OnTicketClosedWithError += TransitionTicket;
+    }
+
+    private void UnregisterFromHub()
+    {
+        TicketHubConnector.OnTicketOpened -= AddTicket;
+        TicketHubConnector.OnTicketProgressed -= TransitionTicket;
+        TicketHubConnector.OnTicketClosedWithSuccess -= TransitionTicket;
+        TicketHubConnector.OnTicketClosedWithValidationErrors -= TransitionTicket;
+        TicketHubConnector.OnTicketClosedWithError -= TransitionTicket;
+    }
+
+    private void AddTicket(Ticket ticket)
+    {
+        Tickets = Tickets.Append(ticket).ToList();
+        
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void TransitionTicket(Ticket preTransitionTicket, Ticket postTransitionTicket)
+    {
+        Tickets = Tickets
+                  .ReplaceFirstOrAppend(ticket => ticket.TrackingNumber == postTransitionTicket.TrackingNumber, postTransitionTicket)
+                  .ToList();
+
+        InvokeAsync(StateHasChanged);
+    }
+}

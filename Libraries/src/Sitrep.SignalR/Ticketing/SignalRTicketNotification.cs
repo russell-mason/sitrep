@@ -7,11 +7,11 @@
 public class SignalRTicketNotification(IHubContext<SignalRTicketHub> ticketHub) : ITicketNotification
 {
     /// <inheritdoc/>
-    public virtual async Task NotifyAsync(CreatedEvent createdEvent)
+    public virtual async Task NotifyAsync(OpenEvent openEvent)
     {
         await ticketHub.Clients
-                       .User(createdEvent.Ticket.IssuedTo)
-                       .SendAsync(createdEvent.Action, createdEvent.Ticket);
+                       .User(openEvent.Ticket.IssuedTo)
+                       .SendAsync(openEvent.Action, openEvent.Ticket);
     }
 
     /// <inheritdoc/>

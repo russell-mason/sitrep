@@ -11,18 +11,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
-  <!--<ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Libraries\src\Sitrep.AspNetCore\Sitrep.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Libraries\src\Sitrep.RedisStack\Sitrep.RedisStack.csproj" />
     <ProjectReference Include="..\..\Libraries\src\Sitrep.SignalR\Sitrep.SignalR.csproj" />
     <ProjectReference Include="..\..\Libraries\src\Sitrep\Sitrep.csproj" />
-  </ItemGroup>-->
-
-    <ItemGroup>
-        <PackageReference Include="Sitrep" Version="0.4.3" />
-        <PackageReference Include="Sitrep.AspNetCore" Version="0.4.3" />
-        <PackageReference Include="Sitrep.RedisStack" Version="0.4.3" />
-        <PackageReference Include="Sitrep.SignalR" Version="0.4.3" />
-    </ItemGroup>
+  </ItemGroup>
 
 </Project>

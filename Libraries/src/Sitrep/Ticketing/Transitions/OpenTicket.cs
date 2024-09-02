@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides state that can be used to create a ticket in an initial pending state.
 /// </summary>
-public class OpenTicket : ICreateTicketState
+public class OpenTicket : IOpenTicketState
 {
     private readonly Guid _trackingNumber;
     private readonly string _issuedTo;

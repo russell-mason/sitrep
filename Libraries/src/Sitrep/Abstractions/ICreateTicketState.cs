@@ -3,7 +3,7 @@
 /// <summary>
 /// When implemented, creates the desired state for a new ticket.
 /// </summary>
-public interface ICreateTicketState
+public interface IOpenTicketState
 {
     /// <summary>
     /// Gets a key-based description that indicates the action this state represents.

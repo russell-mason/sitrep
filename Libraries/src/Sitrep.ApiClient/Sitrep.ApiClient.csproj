@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Sitrep.ApiClient</PackageId>
+        <Version>0.5.0</Version>
+        <Authors>Russell Mason</Authors>
+        <Company>Russell Mason</Company>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>SITREP - API Client</Title>
+        <Copyright>Russell Mason 2024</Copyright>
+        <Description>Provides a .NET client for accessing the SITREP HTTP based API.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="docs\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Refit" Version="7.1.2" />
+        <PackageReference Include="Refit.HttpClientFactory" Version="7.1.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Sitrep\Sitrep.csproj" />
+    </ItemGroup>
+
+</Project>

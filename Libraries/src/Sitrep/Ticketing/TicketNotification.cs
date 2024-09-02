@@ -6,7 +6,7 @@
 public class TicketNotification : ITicketNotification
 {
     /// <inheritdoc/>
-    public Task NotifyAsync(CreatedEvent createdEvent)
+    public Task NotifyAsync(OpenEvent openEvent)
     {
         return Task.CompletedTask;
     }

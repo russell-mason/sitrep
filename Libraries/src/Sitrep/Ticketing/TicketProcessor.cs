@@ -8,15 +8,15 @@
 public class TicketProcessor(ITicketStore ticketStore, ITicketNotification ticketNotification) : ITicketProcessor
 {
     /// <inheritdoc />
-    public virtual async Task<Ticket> CreateTicketAsync(ICreateTicketState creator)
+    public virtual async Task<Ticket> OpenTicketAsync(IOpenTicketState creator)
     {
         var ticket = creator.CreateState();
 
         await SaveAsync(ticket);
 
-        var createdEvent = new CreatedEvent(creator.Action, ticket);
+        var openEvent = new OpenEvent(creator.Action, ticket);
         
-        await ticketNotification.NotifyAsync(createdEvent);
+        await ticketNotification.NotifyAsync(openEvent);
 
         return ticket;
     }

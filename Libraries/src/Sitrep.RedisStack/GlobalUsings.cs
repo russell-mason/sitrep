@@ -11,3 +11,4 @@ global using Sitrep.Ticketing;
 global using StackExchange.Redis;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
+global using System.Text.RegularExpressions;

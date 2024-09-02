@@ -10,7 +10,7 @@ public record OpenTicketRequest([FromBody] OpenTicketRequestBody Body)
     /// Converts the request to a creation state.
     /// </summary>
     /// <returns>The creation state.</returns>
-    public OpenTicket ToCreateTicketState() => new(Body.IssuedTo, Body.IssuedOnBehalfOf ?? Body.IssuedTo, Body.ReasonForIssuing);
+    public OpenTicket ToOpenTicketState() => new(Body.IssuedTo, Body.IssuedOnBehalfOf ?? Body.IssuedTo, Body.ReasonForIssuing);
 }
 
 /// <summary>

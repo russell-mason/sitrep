@@ -21,7 +21,7 @@ public static class PostOpenTicketEndpoint
                                                     ITicketProcessor ticketProcessor,
                                                     LinkGenerator linkGenerator)
     {
-        var ticket = await ticketProcessor.CreateTicketAsync(request.ToCreateTicketState());
+        var ticket = await ticketProcessor.OpenTicketAsync(request.ToOpenTicketState());
         var response = new TicketResponse(ticket);
 
         var url = linkGenerator.GetPathByName(Routes.GetTicketName, new { trackingNumber = response.TrackingNumber });

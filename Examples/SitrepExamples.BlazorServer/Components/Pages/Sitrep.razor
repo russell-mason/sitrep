@@ -1,0 +1,61 @@
+﻿@page "/sitrep"
+@rendermode InteractiveServer
+@inject ISignalRTicketHubConnector TicketHubConnector
+
+<PageTitle>Sitrep</PageTitle>
+
+<main>
+    <nav>
+        <NavLink href="/">Home</NavLink>
+    </nav>
+
+    <header>
+        <input type="text" @bind="IssuedToText" @bind:event="oninput" disabled="@IsConnected">
+        <button @onclick="ConnectToHubAsync" disabled="@(!CanConnect)">Connect</button>
+        <button @onclick="DisconnectFromHubAsync" disabled="@(!CanDisconnect)">Disconnect</button>
+        
+        <h1>MY TICKETS</h1>
+    </header>
+
+    <ErrorBoundary @ref="ErrorBoundary">
+        <ChildContent>
+            <SitrepTicketing @rendermode="InteractiveServer" IssuedTo="@IssuedTo"></SitrepTicketing>
+        </ChildContent>
+
+        <ErrorContent Context="errorException">
+            <div @onclick="Recover">ERROR! Fix and click here to recover.</div>
+        </ErrorContent>
+    </ErrorBoundary>
+</main>
+
+@code{
+    private ErrorBoundary? ErrorBoundary { get; set; }
+
+    private string IssuedTo { get; set; } = string.Empty;
+
+    private string IssuedToText { get; set; } = string.Empty;
+
+    private bool IsConnected { get; set; }
+
+    private bool CanConnect => !string.IsNullOrWhiteSpace(IssuedToText) && !IsConnected;
+
+    private bool CanDisconnect => IsConnected;
+
+    public void Recover() => ErrorBoundary?.Recover();
+
+    private async Task ConnectToHubAsync()
+    {
+        await TicketHubConnector.ConnectAsync(IssuedToText);
+
+        IsConnected = true;
+        IssuedTo = IssuedToText;
+    }
+
+    private async Task DisconnectFromHubAsync()
+    {
+        await TicketHubConnector.DisconnectAsync();
+
+        IsConnected = false;
+        IssuedTo = string.Empty;
+    }
+}

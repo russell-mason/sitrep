@@ -9,7 +9,7 @@
 
     <PropertyGroup>
         <PackageId>Sitrep</PackageId>
-        <Version>0.4.3</Version>
+        <Version>0.5.0</Version>
         <Authors>Russell Mason</Authors>
         <Company>Russell Mason</Company>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

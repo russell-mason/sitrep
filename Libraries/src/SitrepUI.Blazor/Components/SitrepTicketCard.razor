@@ -1,0 +1,170 @@
+﻿<div class="ticket @CurrentStateClassName() @ExpandedClassName()">
+    <div class="ticket-summary">
+        <div class="caption-text">Tracking Number</div>
+        <div class="ticket-number constrain">@Ticket.TrackingNumber</div>
+        <div class="ticket-reason">@Ticket.ReasonForIssuing</div>
+        <div class="ticket-state">@ProcessingStateText()</div>
+        <div class="icon @ExpandedClassName()" @onclick="@ToggleExpandedAsync"></div>
+    </div>
+
+    <div class="ticket-details" style="z-index: @(500 - CardIndex);">
+        <div class="ticket-details-content">
+            @if (Ticket.ProcessingMessage != null)
+            {
+                <div class="section">
+                    <div class="highlight">@Ticket.ProcessingMessage</div>
+                </div>
+            }
+
+            <div class="section">
+                <span>Opened by </span>
+                <span class="highlight">@Ticket.IssuedTo</span>
+
+                @if (Ticket.IssuedOnBehalfOf != "Ticket.IssuedTo")
+                {
+                    <span> on behalf of </span>
+                    <span class="highlight">@Ticket.IssuedOnBehalfOf</span>
+                }
+            </div>
+
+            @if (Ticket.ResourceIdentifier != null)
+            {
+                <div class="section">
+                    <div class="section-title">Resource</div>
+                    <div class="ticket-resource">@Ticket.ResourceIdentifier</div>
+                </div>
+            }
+
+            @if (Ticket.ErrorCode != null)
+            {
+                <div class="section">
+                    <div class="section-title">Error</div>
+                    <div class="ticket-error">@Ticket.ErrorCode</div>
+                </div>
+            }
+
+            @if (Ticket.ValidationErrors != null)
+            {
+                <div class="section">
+                    <div class="section-title">Errors</div>
+
+                    <div>
+                        @foreach (var validationError in Ticket.ValidationErrors)
+                        {
+                            <div class="ticket-validation-key">
+                                <div class="highlight">@validationError.Key</div>
+
+                                <ul class="ticket-validation-values">
+                                    @foreach (var value in validationError.Value)
+                                    {
+                                        <li class="ticket-validation-value">@value</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="section">
+                <div class="section-title">Events</div>
+
+                <div>
+                    <span>Opened at </span>
+                    <span class="highlight">@FormatDate(Ticket.DateIssued)</span>
+                    <span class="utc">UTC</span>
+                </div>
+
+                @if (Ticket.DateLastProgressed != null)
+                {
+                    <div>
+                        <span>Last updated at </span>
+                        <span class="highlight">@FormatDate(Ticket.DateLastProgressed)</span>
+                        <span class="utc">UTC</span>
+                    </div>
+                }
+
+                @if (Ticket.DateClosed != null)
+                {
+                    <div>
+                        <span>Closed at </span>
+                        <span class="highlight">@FormatDate(Ticket.DateClosed)</span>
+                        <span class="utc">UTC</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets the ticket to display.
+    /// </summary>
+    [Parameter]
+    [EditorRequired]
+    public required Ticket Ticket { get; set; }
+
+    // TODO: This should raise events, but need to ensure this wouldn't create an infinite loop - BL0007.
+    /// <summary>
+    /// Gets or sets whether the card is expanded or collapsed.
+    /// </summary>
+    [Parameter]
+    public bool IsExpanded { get; set; }
+
+    /// <summary>
+    /// Gets or set the zero index of the card within its parent collection. This is used to determine the
+    /// z-index of the card details when expanded. If not set this may cause overlapping issues when multiple
+    /// cards are expanded.
+    /// </summary>
+    [Parameter]
+    public int CardIndex { get; set; }
+
+    /// <summary>
+    /// Occurs when the card is expanded to show additional details.
+    /// </summary>
+    [Parameter]
+    public EventCallback<Ticket> OnExpanded { get; set; }
+
+    /// <summary>
+    /// Occurs when the card is collapsed to hide the additional details.
+    /// </summary>
+    [Parameter]
+    public EventCallback<Ticket> OnCollapsed { get; set; }
+
+    private async Task ToggleExpandedAsync()
+    {
+        IsExpanded = !IsExpanded;
+
+        if (IsExpanded)
+        {
+            await OnExpanded.InvokeAsync(Ticket);
+        }
+        else
+        {
+            await OnCollapsed.InvokeAsync(Ticket);
+        }
+    }
+
+    private string ProcessingStateText() =>
+        Ticket.ProcessingState switch
+        {
+            ProcessingState.InProgress => "in progress",
+            ProcessingState.Succeeded => "complete - success",
+            ProcessingState.Failed => $"complete - {(Ticket.ValidationErrors is { Count: > 0 } ? "failed validation" : "error")}",
+            _ => "pending"
+        };
+
+    private string CurrentStateClassName() =>
+        Ticket.ProcessingState switch
+        {
+            ProcessingState.InProgress => "in-progress",
+            ProcessingState.Succeeded => "succeeded",
+            ProcessingState.Failed => Ticket.ValidationErrors is { Count: > 0 } ? "validation-error" : "error",
+            _ => "pending"
+        };
+
+    private string ExpandedClassName() => IsExpanded ? "expanded" : "collapsed";
+
+    private string FormatDate(DateTime? date) => date == null ? string.Empty : date.Value.ToString("yyyy-MM-dd HH:mm:ss");
+}

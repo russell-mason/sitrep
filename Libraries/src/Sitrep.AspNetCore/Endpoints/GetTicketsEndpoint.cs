@@ -20,7 +20,7 @@ public static class GetTicketsEndpoint
     private static async Task<IResult> ExecuteAsync([AsParameters] GetTicketsRequest request,
                                                     ITicketStore ticketSore)
     {
-        var tickets = request.IssuedTo == null ? [] : await ticketSore.GetTicketsAsync(request.IssuedTo);
+        var tickets = string.IsNullOrWhiteSpace(request.IssuedTo) ? [] : await ticketSore.GetTicketsAsync(request.IssuedTo);
         var response = new GetTicketsResponse(tickets);
 
         return Results.Ok(response);

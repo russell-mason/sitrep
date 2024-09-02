@@ -3,8 +3,11 @@
 /// <summary>
 /// A persistent store for tracking tickets, where items are stored using Redis Stack.
 /// </summary>
-public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> options) : ITicketStore
+public partial class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> options) : ITicketStore
 {
+    [GeneratedRegex(@"(?<char>[!""$%^&*()_+-={}\[\]:@~;'#<>?,.|\\`])", RegexOptions.Compiled)]
+    private static partial Regex EscapeRegex();
+
     /// <inheritdoc />
     public void Initialize()
     {
@@ -29,7 +32,9 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
         await using var redis = await ConnectionMultiplexer.ConnectAsync(Options.ConnectionString);
         var searchCommands = redis.GetDatabase().FT();
 
-        var tickets = (await searchCommands.SearchAsync(Options.TicketsIndexName, new Query($"@issuedTo:(\"{issuedTo}\")")))
+        var escaped = EscapeRegex().Replace(issuedTo, @"\${char}");
+
+        var tickets = (await searchCommands.SearchAsync(Options.TicketsIndexName, new Query($"@issuedTo:{{{escaped}}}")))
                       .ToJson()
                       .Select(json => JsonSerializer.Deserialize<Ticket>(json, Options.JsonSerializerOptions)!);
 
@@ -76,7 +81,7 @@ public class RedisStackTicketStore(IOptions<RedisStackTicketStoreOptions> option
 
             searchCommands.Create(Options.TicketsIndexName,
                                   new FTCreateParams().On(IndexDataType.JSON).Prefix(Options.TicketKeyPrefix),
-                                  new Schema().AddTextField(new FieldName("$.issuedTo", "issuedTo")));
+                                  new Schema().AddTagField(new FieldName("$.issuedTo", "issuedTo")));
         }
         catch (RedisServerException ex) when (ex.Message == "Index already exists")
         {

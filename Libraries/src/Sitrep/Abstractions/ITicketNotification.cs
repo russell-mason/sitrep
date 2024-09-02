@@ -8,9 +8,9 @@ public interface ITicketNotification
     /// <summary>
     /// Notifies the user of details relating to a ticket creation event.
     /// </summary>
-    /// <param name="createdEvent">The event capturing the ticket details.</param>
+    /// <param name="openEvent">The event capturing the ticket details.</param>
     /// <returns></returns>
-    Task NotifyAsync(CreatedEvent createdEvent);
+    Task NotifyAsync(OpenEvent openEvent);
 
     /// <summary>
     /// Notifies the user of details relating to a ticket state transition event.

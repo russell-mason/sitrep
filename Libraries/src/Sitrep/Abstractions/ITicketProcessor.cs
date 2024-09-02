@@ -10,7 +10,7 @@ public interface ITicketProcessor
     /// </summary>
     /// <param name="creator">The implementation that creates the ticket.</param>
     /// <returns>The newly created ticket.</returns>
-    Task<Ticket> CreateTicketAsync(ICreateTicketState creator);
+    Task<Ticket> OpenTicketAsync(IOpenTicketState creator);
 
     /// <summary>
     /// Updates the state of an existing ticket using the specified ticket transition.

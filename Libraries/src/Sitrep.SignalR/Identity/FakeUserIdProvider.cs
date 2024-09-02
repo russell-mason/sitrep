@@ -1,5 +1,7 @@
 ﻿namespace Sitrep.SignalR.Identity;
 
+// TODO: Replace with authentication
+
 /// <summary>
 /// Provides a fake User ID for SignalR connections via a web sockets header.
 /// <para>

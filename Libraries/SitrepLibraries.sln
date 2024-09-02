@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{C50E29
 		docker\docket-up.cmd = docker\docket-up.cmd
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7606F0AC-CE98-407D-B3CA-3CD2DB7FC539}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{7606F0AC-CE98-407D-B3CA-3CD2DB7FC539}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
 	EndProjectSection
@@ -42,6 +42,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{75C8F0E0-2
 		..\docs\sitrep-ticket-tracking.svg = ..\docs\sitrep-ticket-tracking.svg
 		..\docs\SitrepTicketTracking.vsdx = ..\docs\SitrepTicketTracking.vsdx
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitrepUI.Blazor", "src\SitrepUI.Blazor\SitrepUI.Blazor.csproj", "{354F81CF-E4EF-48FF-9049-CD2F46044BF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sitrep.ApiClient", "src\Sitrep.ApiClient\Sitrep.ApiClient.csproj", "{9497A54A-83F7-489F-8ECC-576E821E1572}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +77,14 @@ Global
 		{896BE65F-CF1D-4C07-845C-DBE5C050C5B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{896BE65F-CF1D-4C07-845C-DBE5C050C5B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{896BE65F-CF1D-4C07-845C-DBE5C050C5B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{354F81CF-E4EF-48FF-9049-CD2F46044BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{354F81CF-E4EF-48FF-9049-CD2F46044BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{354F81CF-E4EF-48FF-9049-CD2F46044BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{354F81CF-E4EF-48FF-9049-CD2F46044BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9497A54A-83F7-489F-8ECC-576E821E1572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9497A54A-83F7-489F-8ECC-576E821E1572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9497A54A-83F7-489F-8ECC-576E821E1572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9497A54A-83F7-489F-8ECC-576E821E1572}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,7 +97,8 @@ Global
 		{19404991-0043-4E50-BE9E-8E6A4F42DE1C} = {A3E934C3-0A68-48C8-A398-1325EB20DD0E}
 		{704DCE4A-C363-40B0-92E4-23C7531B4A7A} = {7C5C5354-E05E-47E7-86F4-BED93F7A749D}
 		{896BE65F-CF1D-4C07-845C-DBE5C050C5B8} = {704DCE4A-C363-40B0-92E4-23C7531B4A7A}
-		{75C8F0E0-265E-4C9C-ACB0-DDD850DEFA63} = {7606F0AC-CE98-407D-B3CA-3CD2DB7FC539}
+		{354F81CF-E4EF-48FF-9049-CD2F46044BF5} = {A3E934C3-0A68-48C8-A398-1325EB20DD0E}
+		{9497A54A-83F7-489F-8ECC-576E821E1572} = {A3E934C3-0A68-48C8-A398-1325EB20DD0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A3E7EFC-7E61-40CF-ABCA-6551C7C401A6}

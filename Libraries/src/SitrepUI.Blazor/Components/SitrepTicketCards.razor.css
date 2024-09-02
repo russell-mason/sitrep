@@ -1,0 +1,6 @@
+﻿.tickets {
+    display: flex;
+    flex-wrap: wrap;
+    font-family: Roboto, sans-serif;
+    gap: 18px;
+}
