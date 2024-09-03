@@ -4,6 +4,9 @@ services:
   redis:
     image: redis/redis-stack:latest
     container_name: redisstack01
+    command:
+      - 'redis-stack-server'
+      - '--save 10 1'
     ports:
       - 6379:6379
     volumes:

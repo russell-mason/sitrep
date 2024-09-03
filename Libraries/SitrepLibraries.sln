@@ -29,7 +29,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{C50E29C8-24B1-4BBE-87B9-218DC4F4DFED}"
 	ProjectSection(SolutionItems) = preProject
 		docker\docker-compose.yml = docker\docker-compose.yml
-		docker\docket-up.cmd = docker\docket-up.cmd
+		docker\docker-up.cmd = docker\docker-up.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{7606F0AC-CE98-407D-B3CA-3CD2DB7FC539}"

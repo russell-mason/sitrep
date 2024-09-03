@@ -7,13 +7,13 @@ builder.Services
 
 builder.Services.AddExamples();
 
-builder.Services.AddSitrep(optionsBuilder => optionsBuilder.UseAspNetCore()
-                                                           .UseInMemoryTicketStore()
-                                                           .UseSignalRNotifications());
-
 //builder.Services.AddSitrep(optionsBuilder => optionsBuilder.UseAspNetCore()
-//                                                           .UseRedisStackTicketStore()
+//                                                           .UseInMemoryTicketStore()
 //                                                           .UseSignalRNotifications());
+
+builder.Services.AddSitrep(optionsBuilder => optionsBuilder.UseAspNetCore()
+                                                           .UseRedisStackTicketStore()
+                                                           .UseSignalRNotifications());
 
 var app = builder.Build();
 

@@ -5,3 +5,4 @@ global using SitrepExamples.Api.DependencyInjection;
 global using SitrepExamples.Api.Endpoints.SanityChecks;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
+global using Sitrep.RedisStack.DependencyInjection;
